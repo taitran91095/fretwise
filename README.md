@@ -26,6 +26,17 @@ npm run format:check  # Check formatting without changing files
 
 Tests use Vitest and Angular TestBed with jsdom. Audio tests substitute a controlled Web Audio implementation, so no speaker or browser permissions are required.
 
+## GitHub Pages deployment
+
+The deployment target builds for [taitran91095.github.io/fretwise/](https://taitran91095.github.io/fretwise/) with `baseHref: "/fretwise/"` in `angular.json`. This makes JavaScript, CSS, and favicon URLs resolve under the repository path.
+
+```sh
+npm run deploy -- --dry-run # Build and check deployment without publishing
+npm run deploy             # Rebuild and publish to the gh-pages branch
+```
+
+In the repository's GitHub Pages settings, use the `gh-pages` branch and `/ (root)` folder. If the repository path changes, update the deployment target's `baseHref`, including the trailing slash. Local development continues to use `/`.
+
 ## Code organization
 
 ```text
