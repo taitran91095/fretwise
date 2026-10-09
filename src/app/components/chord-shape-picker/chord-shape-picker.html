@@ -1,0 +1,100 @@
+<section class="shapes-panel panel" aria-labelledby="shapes-title">
+  <div class="shapes-heading">
+    <div>
+      <div class="overline">MAKE THE SHAPE</div>
+      <h2 id="shapes-title">Finger positions for {{ name() }}</h2>
+      <p>Choose a position. The numbers show which fingers to use.</p>
+    </div>
+    <button
+      class="all-notes-button"
+      [attr.aria-pressed]="selectedIndex() === null"
+      (click)="shapeSelected.emit(null)"
+    >
+      Show all chord notes
+    </button>
+  </div>
+  <div class="caged-guide">
+    <div class="caged-letters" aria-label="CAGED shape families">
+      @for (family of families; track family) {
+        <span [class.current-family]="activeShape()?.family === family">{{ family }}</span>
+      }
+    </div>
+    <p>
+      The same chord in different places. Major chords use all five CAGED families; minor chords
+      offer the E, A, and D grips.
+    </p>
+  </div>
+  <div class="shape-groups">
+    @for (group of shapeGroups; track group) {
+      <div class="shape-group">
+        <h3>{{ group }}</h3>
+        <div class="shape-options">
+          @for (shape of shapes(); track shape.id; let index = $index) {
+            @if (shape.group === group) {
+              <button
+                class="shape-card"
+                [class.chosen]="selectedIndex() === index"
+                [attr.aria-pressed]="selectedIndex() === index"
+                [attr.aria-label]="shape.name + ', ' + shapeSummary(shape)"
+                (click)="shapeSelected.emit(index)"
+              >
+                <div class="shape-card-title">
+                  <strong>{{ shape.name }}</strong>
+                  <span>{{ selectedIndex() === index ? '✓' : '↗' }}</span>
+                </div>
+                <app-chord-diagram [shape]="shape" />
+                <span class="shape-position">
+                  {{ shape.id === 'open' ? 'Open strings · ' : '' }}{{ fretRange(shape) }}
+                </span>
+                @if (shape.hint) {
+                  <small class="shape-hint">{{ shape.hint }}</small>
+                }
+              </button>
+            }
+          }
+        </div>
+        @if (group === 'Open position' && shapes()[0]?.group !== 'Open position') {
+          <p class="no-open">Choose a movable CAGED grip for this chord.</p>
+        }
+      </div>
+    }
+  </div>
+  <div class="finger-guide">
+    <span>
+      <b>1</b>
+      Index
+    </span>
+    <span>
+      <b>2</b>
+      Middle
+    </span>
+    <span>
+      <b>3</b>
+      Ring
+    </span>
+    <span>
+      <b>4</b>
+      Pinky
+    </span>
+    <span>
+      <b>○</b>
+      Open string
+    </span>
+    <span>
+      <b>×</b>
+      Do not play
+    </span>
+  </div>
+  @if (activeShape(); as shape) {
+    <div class="shape-instruction">
+      <p>
+        <strong>{{ shape.name }}</strong>
+        ·
+        {{ instruction(shape) }}
+        Numbers on the fretboard mark this shape.
+      </p>
+      <button class="play-button" (click)="strumRequested.emit()">▶ Hear this shape</button>
+    </div>
+    <app-hand-position [shape]="shape" [chordName]="name()" />
+  }
+</section>

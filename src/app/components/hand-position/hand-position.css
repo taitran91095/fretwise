@@ -1,0 +1,304 @@
+:host {
+  display: block;
+}
+.hand-section {
+  margin-top: 25px;
+  border-top: 1px solid #e3e9d9;
+  padding-top: 25px;
+}
+.hand-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+}
+.overline {
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  font-weight: 600;
+  color: #8d987f;
+}
+h3 {
+  font-family: Manrope, sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  margin: 7px 0;
+}
+.hand-heading p {
+  font-size: 12px;
+  color: #7a886d;
+  margin: 0;
+}
+.hand-label {
+  background: white;
+  border: 1px solid #cdd9bf;
+  border-radius: 7px;
+  padding: 10px 13px;
+  color: #48613a;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.hand-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.5fr) minmax(260px, 1fr);
+  gap: 25px;
+  max-width: 1080px;
+  margin: 22px auto 0;
+  align-items: center;
+}
+.hand-visual {
+  background: radial-gradient(ellipse, #eef3e3 0, transparent 70%);
+  text-align: center;
+}
+.hand-visual svg {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: auto;
+}
+.finger-number {
+  text-anchor: middle;
+  fill: white;
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.view-label {
+  fill: #7a886c;
+  text-anchor: middle;
+  font-size: 8px;
+  letter-spacing: 1.7px;
+}
+.hand-caption {
+  display: block;
+  font-size: 10px;
+  color: #849175;
+  line-height: 1.7;
+  margin: 8px 0;
+}
+.hand-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.finger-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 13px 15px;
+  border: 1px solid #dfe7d4;
+  border-radius: 9px;
+  background: #fafcf7;
+  color: #34482e;
+}
+.finger-step:hover,
+.finger-step.highlighted {
+  background: #edf3e3;
+  border-color: #9db485;
+}
+.finger-step.resting {
+  background: #fcfcfa;
+  color: #939b88;
+}
+.finger-badge {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+}
+.finger-step strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.finger-step small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 4px;
+  color: #6d7f5f;
+}
+.resting small {
+  color: #939b88;
+}
+.barre-badge {
+  margin-left: auto;
+  color: #63804e;
+  font-size: 8px;
+  letter-spacing: 1px;
+  background: #e6eed9;
+  border-radius: 4px;
+  padding: 5px;
+}
+.thumb-note {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 4px 15px;
+}
+.thumb-note > span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #a0af8d;
+  color: #6b7d59;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.thumb-note p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #879477;
+  margin: 8px 0;
+}
+.thumb-note strong {
+  font-weight: 500;
+  color: #657b52;
+}
+.string-reminders {
+  border-top: 1px solid #e7ecdf;
+  padding: 8px 15px 0;
+}
+.string-reminders p {
+  font-size: 10px;
+  color: #7d8c6c;
+  margin: 7px 0;
+  line-height: 1.6;
+}
+.string-reminders b {
+  color: #506e39;
+  margin-right: 6px;
+}
+.string-reminders strong {
+  font-weight: 500;
+  color: #4e663d;
+}
+@media (max-width: 850px) {
+  .hand-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .hand-visual svg {
+    max-width: 520px;
+  }
+  .hand-heading h3 {
+    font-size: 18px;
+  }
+  .hand-heading {
+    align-items: flex-start;
+  }
+  .hand-steps {
+    gap: 7px;
+  }
+  .finger-step {
+    padding: 11px 13px;
+  }
+}
+
+.pose-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 0 15px 10px;
+  font-size: 10px;
+  color: #7a886c;
+}
+.pose-toolbar button {
+  border: 1px solid #cdd9bf;
+  background: white;
+  border-radius: 6px;
+  color: #48613a;
+  font-size: 10px;
+  padding: 7px 10px;
+}
+.behind-thumb {
+  fill: #edcfac;
+  stroke: #bc9770;
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  opacity: 0.75;
+}
+.thumb-callout {
+  font-size: 10px;
+  fill: #778565;
+}
+.callout-line {
+  fill: none;
+  stroke: #84966e;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.neck-fret {
+  stroke: #b5afa3;
+  stroke-width: 4;
+}
+.neck-fret.neck-nut {
+  stroke: #918572;
+  stroke-width: 7;
+}
+.neck-fret-label {
+  font-size: 13px;
+  fill: #6f7c61;
+  text-anchor: middle;
+}
+.neck-string-label {
+  font-size: 12px;
+  fill: #5c7050;
+  text-anchor: middle;
+  font-weight: 600;
+}
+.neck-string-status {
+  font-size: 15px;
+  fill: #5c7050;
+  text-anchor: middle;
+}
+.grip-palm {
+  fill: url(#skin);
+  stroke: #bc9770;
+  stroke-width: 2;
+}
+.finger-outline {
+  fill: none;
+  stroke: #bd9874;
+  stroke-width: 30;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.finger-skin {
+  fill: none;
+  stroke: url(#skin);
+  stroke-width: 26;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.finger-tint {
+  fill: none;
+  stroke-width: 17;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.12;
+}
+.posed-finger.emphasized .finger-outline {
+  stroke: #65844b;
+  stroke-width: 33;
+}
+.posed-finger.emphasized .finger-tint {
+  opacity: 0.3;
+}
+.contact-dot {
+  stroke: #fff;
+  stroke-width: 2;
+}
+.wrist-line {
+  fill: none;
+  stroke: #c09c77;
+  stroke-width: 1.5;
+}

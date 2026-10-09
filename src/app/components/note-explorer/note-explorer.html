@@ -1,0 +1,66 @@
+<section class="notes-panel panel" aria-labelledby="notes-title">
+  <div class="notes-top">
+    <div>
+      <div class="overline">MEET YOUR NOTES</div>
+      <h2 id="notes-title">
+        {{ name() }}
+        <span class="pill">{{ notes().length }} notes</span>
+      </h2>
+    </div>
+    <button class="play-button" (click)="playRequested.emit()">
+      <span>{{ playing() ? '■' : '▶' }}</span>
+      {{ playing() ? 'Stop playback' : 'Hear ' + mode() }}
+    </button>
+  </div>
+  <p class="notes-description">
+    {{
+      mode() === 'scale'
+        ? 'A collection of notes that sound right together. Start with the root and explore.'
+        : 'Play these notes together to hear the chord, or find each one on your guitar.'
+    }}
+  </p>
+  <div class="note-cards" aria-live="polite">
+    @for (note of notes(); track $index) {
+      <button
+        class="note-card"
+        [class.root-note]="$index === 0"
+        [class.selected]="selectedPitch() === note.pitch"
+        (click)="
+          noteSelected.emit({ pitch: note.pitch, midi: 60 + notes()[0].pitch + note.interval })
+        "
+        [attr.aria-label]="'Play ' + note.name"
+        [attr.aria-pressed]="selectedPitch() === note.pitch"
+      >
+        <span class="note-degree">{{ note.degree }}</span>
+        <strong>{{ note.name }}</strong>
+        <span class="note-caption">
+          {{
+            $index === 0
+              ? 'ROOT'
+              : mode() === 'chord'
+                ? $index === 1
+                  ? 'THIRD'
+                  : 'FIFTH'
+                : 'NOTE ' + ($index + 1)
+          }}
+        </span>
+      </button>
+    }
+  </div>
+  <div class="formula">
+    <span>{{ mode() === 'scale' ? 'THE PATTERN' : 'THE FORMULA' }}</span>
+    <strong>
+      {{ mode() === 'scale' ? scale().formula : minor() ? '1 · ♭3 · 5' : '1 · 3 · 5' }}
+    </strong>
+    <span class="formula-help">
+      {{ mode() === 'scale' ? 'W = whole step · H = half step' : 'Root · third · fifth' }}
+    </span>
+  </div>
+  <div class="note-hint">
+    <span>↗</span>
+    Click a note to hear it and find every position on the fretboard.
+  </div>
+  @if (audioError()) {
+    <p role="alert">{{ audioError() }}</p>
+  }
+</section>

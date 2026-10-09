@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+.controls {
+  padding: 24px;
+}
+.segmented {
+  display: flex;
+  background: #f3f5ef;
+  border: 1px solid #e8ebdf;
+  padding: 4px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+.segmented button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 12px;
+  color: #7b8374;
+}
+.segmented button.active {
+  background: white;
+  box-shadow: 0 1px 4px #22392214;
+  color: #34543c;
+  font-weight: 600;
+}
+label {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin: 21px 0 9px;
+}
+label span {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #9a9f94;
+  margin-top: 5px;
+}
+select {
+  appearance: none;
+  width: 100%;
+  border: 1px solid #dfe5d8;
+  border-radius: 7px;
+  padding: 12px 14px;
+  background: #fff;
+  color: #354635;
+  font-size: 13px;
+  cursor: pointer;
+}
+.select-wrap {
+  position: relative;
+}
+.select-wrap:after {
+  content: '⌄';
+  position: absolute;
+  right: 15px;
+  top: 9px;
+  color: #85937b;
+  pointer-events: none;
+}
+.sound-description {
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid #edf0e8;
+  margin-top: 25px;
+  padding-top: 22px;
+}
+.sparkle {
+  color: #7e9566;
+  font-size: 22px;
+  line-height: 1;
+}
+.sound-description h3 {
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0 0 7px;
+}
+.sound-description p {
+  font-size: 11px;
+  color: #92998c;
+  line-height: 1.8;
+  margin: 0;
+}
+.tuning {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 23px;
+  padding: 13px 12px;
+  background: #f6f8f1;
+  border-radius: 7px;
+  font-size: 11px;
+}
+.tuning > span:first-child {
+  font-size: 19px;
+  color: #8a9a72;
+}
+.tuning small {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  color: #929d86;
+  letter-spacing: 1.3px;
+}
+.tuning-check {
+  margin-left: auto;
+  color: #869c70;
+}
+@media (max-width: 760px) {
+  .controls {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 15px;
+  }
+  .controls .section-heading,
+  .segmented,
+  .sound-description,
+  .tuning {
+    grid-column: 1/-1;
+  }
+  .segmented {
+    margin: 20px 0 2px;
+  }
+  .controls label {
+    grid-row: 3;
+  }
+  .controls .select-wrap {
+    grid-row: 4;
+  }
+  .sound-description {
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+  .tuning {
+    margin-top: 17px;
+  }
+}
+
+.controls {
+  height: 100%;
+}

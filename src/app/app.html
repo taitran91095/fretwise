@@ -1,0 +1,104 @@
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Fretwise home">
+    <span class="brand-icon">
+      f
+      <span>↗</span>
+    </span>
+    fretwise
+    <span class="brand-dot">.</span>
+  </a>
+  <span class="header-divider"></span>
+  <span class="tagline">A little practice. A lot of possibility.</span>
+  <span class="header-end">
+    <span class="status-dot"></span>
+    YOUR GUITAR JOURNEY STARTS HERE
+  </span>
+</header>
+<main>
+  <div class="eyebrow">
+    <span class="tiny-icon">♮</span>
+    THE PRACTICE ROOM
+    <span class="eyebrow-line"></span>
+    01 / EXPLORE
+  </div>
+  <section class="intro">
+    <div>
+      <h1>
+        Find your way
+        <br />
+        around the
+        <em>fretboard.</em>
+      </h1>
+      <p>Get to know the notes. Connect the dots. Make a little music.</p>
+    </div>
+    <div class="intro-badge">
+      <span>♩</span>
+      <div>
+        Small steps.
+        <br />
+        <strong>Better playing.</strong>
+      </div>
+    </div>
+  </section>
+  <div class="workspace">
+    <app-sound-selector
+      [root]="explorer.root()"
+      [scaleKey]="explorer.scaleKey()"
+      [mode]="explorer.mode()"
+      (rootChange)="explorer.setRoot($event)"
+      (scaleChange)="explorer.setScale($event)"
+      (modeChange)="explorer.setMode($event)"
+    />
+    <app-note-explorer
+      [name]="explorer.name()"
+      [notes]="explorer.notes()"
+      [scale]="explorer.scale()"
+      [mode]="explorer.mode()"
+      [minor]="explorer.minor()"
+      [selectedPitch]="audio.selectedPitch()"
+      [playing]="audio.playing()"
+      [audioError]="audio.error()"
+      (playRequested)="togglePlayback()"
+      (noteSelected)="audio.playNote($event)"
+    />
+  </div>
+  @if (explorer.mode() === 'chord') {
+    <app-chord-shape-picker
+      [name]="explorer.name()"
+      [shapes]="explorer.shapes()"
+      [selectedIndex]="explorer.shapeIndex()"
+      (shapeSelected)="explorer.chooseShape($event)"
+      (strumRequested)="strum()"
+    />
+  }
+  <app-fretboard
+    [notes]="explorer.notes()"
+    [mode]="explorer.mode()"
+    [activeShape]="explorer.activeShape()"
+    [selectedPitch]="audio.selectedPitch()"
+    [showDegrees]="showDegrees()"
+    (degreesChange)="showDegrees.set($event)"
+    (noteSelected)="audio.playNote($event)"
+  />
+
+  <section class="practice-tip">
+    <div class="tip-icon">☀</div>
+    <div>
+      <span class="overline">A LITTLE PRACTICE TIP</span>
+      <p>
+        Start on
+        <strong>{{ explorer.root() }}</strong>
+        . Play each note slowly, then work your way back. Your fingers will learn the map.
+      </p>
+    </div>
+    <span class="tip-decoration">one note at a time ↗</span>
+  </section>
+  <footer>
+    <span class="footer-brand">fretwise.</span>
+    <span>Made for the joy of figuring it out.</span>
+    <span>
+      Keep exploring. Keep playing.
+      <span class="footer-star">✧</span>
+    </span>
+  </footer>
+</main>

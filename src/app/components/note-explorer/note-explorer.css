@@ -1,0 +1,203 @@
+:host {
+  display: block;
+}
+.notes-panel {
+  padding: 30px 31px;
+  display: flex;
+  flex-direction: column;
+}
+.notes-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.notes-top h2 {
+  font-size: 29px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.pill {
+  font:
+    10px 'DM Sans',
+    sans-serif;
+  letter-spacing: 0;
+  color: #80916a;
+  background: #f0f5e6;
+  border: 1px solid #e5ecd8;
+  padding: 5px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.notes-description {
+  font-size: 11px;
+  color: #92998e;
+  margin: 13px 0 32px;
+  line-height: 1.7;
+}
+.note-cards {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 28px;
+}
+.note-card {
+  flex: 1;
+  min-width: 0;
+  background: #fafbf6;
+  border: 1px solid #e4e9dc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 3px 13px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 10px #203b2010;
+}
+.note-degree {
+  font-size: 10px;
+  color: #97a18b;
+}
+.note-card strong {
+  font-family: Manrope, sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  margin: 12px 0 14px;
+  letter-spacing: -1px;
+}
+.note-caption {
+  font-size: 7px;
+  letter-spacing: 1.3px;
+  color: #9da58f;
+}
+.note-card.root-note {
+  background: #31553f;
+  color: white;
+  border-color: #31553f;
+}
+.root-note .note-degree,
+.root-note .note-caption {
+  color: #b9cbb0;
+}
+.note-card.selected {
+  outline: 2px solid #aac479;
+  outline-offset: 3px;
+}
+.formula {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 17px 0;
+  border-top: 1px solid #edf0e8;
+  border-bottom: 1px solid #edf0e8;
+  flex-wrap: wrap;
+}
+.formula > span:first-child {
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  color: #9aa38e;
+}
+.formula strong {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #5a7150;
+}
+.formula-help {
+  margin-left: auto;
+  font-size: 9px;
+  color: #a1a895;
+}
+.note-hint {
+  margin-top: auto;
+  padding-top: 25px;
+  font-size: 10px;
+  color: #939d88;
+}
+.note-hint span {
+  color: #92a774;
+  margin-right: 6px;
+}
+@media (min-width: 1450px) {
+  .note-card {
+    padding-top: 22px;
+    padding-bottom: 19px;
+  }
+}
+@media (max-width: 1100px) {
+  .notes-panel {
+    padding: 25px 22px;
+  }
+  .note-cards {
+    gap: 6px;
+  }
+  .formula {
+    gap: 10px;
+  }
+  .formula-help {
+    margin-left: 0;
+    width: 100%;
+  }
+  .note-card strong {
+    font-size: 27px;
+  }
+  .notes-top h2 {
+    font-size: 25px;
+  }
+  .pill {
+    font-size: 8px;
+  }
+}
+@media (max-width: 760px) {
+  .notes-panel {
+    padding: 24px 18px;
+  }
+  .notes-top h2 {
+    font-size: 25px;
+  }
+  .notes-top {
+    gap: 8px;
+  }
+  .note-cards {
+    gap: 5px;
+  }
+  .note-card strong {
+    font-size: 27px;
+    margin: 11px 0;
+  }
+  .note-degree {
+    font-size: 9px;
+  }
+  .note-caption {
+    font-size: 6px;
+    letter-spacing: 0.6px;
+  }
+  .notes-description {
+    margin-bottom: 23px;
+  }
+  .notes-top h2 {
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .notes-top .pill {
+    font-size: 8px;
+  }
+  .formula {
+    gap: 12px;
+  }
+  .formula strong {
+    font-size: 11px;
+  }
+}
+
+.notes-panel {
+  height: 100%;
+}

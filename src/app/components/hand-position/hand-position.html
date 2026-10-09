@@ -1,0 +1,187 @@
+<section class="hand-section" aria-labelledby="hand-title">
+  <div class="hand-heading">
+    <div>
+      <div class="overline">GET YOUR HAND IN PLACE</div>
+      <h3 id="hand-title">How to hold this chord</h3>
+      <p>{{ chordName() }} · {{ shape().name }}</p>
+    </div>
+    <span class="hand-label">Left fretting hand</span>
+  </div>
+  <div class="hand-layout">
+    <div class="hand-visual">
+      <div class="pose-toolbar">
+        <span>Low E at top · high e at bottom</span>
+        <button [attr.aria-pressed]="showHand()" (click)="showHand.set(!showHand())">
+          {{ showHand() ? 'Hide hand' : 'Show hand' }}
+        </button>
+      </div>
+      <svg
+        viewBox="0 0 520 380"
+        role="img"
+        [attr.aria-label]="
+          'Left hand holding the neck for ' +
+          chordName() +
+          ', ' +
+          shape().name +
+          '. ' +
+          (shape().barre
+            ? 'Index finger lies across fret ' + shape().barre!.fret
+            : 'Fingertips press the numbered string positions.')
+        "
+      >
+        <defs>
+          <linearGradient id="skin" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#f5dfc3" />
+            <stop offset="1" stop-color="#ddb38c" />
+          </linearGradient>
+          <linearGradient id="neck-wood" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#eee4cf" />
+            <stop offset="1" stop-color="#e1d4b9" />
+          </linearGradient>
+        </defs>
+        @if (showHand()) {
+          <path
+            d="M 209 285 Q 147 280 130 223 L 115 143 Q 113 125 127 123 Q 141 122 145 143 L 165 207 Q 181 225 221 230"
+            class="behind-thumb"
+          />
+          <text x="74" y="239" class="thumb-callout">Thumb</text>
+          <text x="74" y="253" class="thumb-callout">behind neck</text>
+          <path d="M 125 235 L 144 218" class="callout-line" />
+        }
+        <rect
+          x="100"
+          y="49"
+          width="360"
+          height="164"
+          rx="7"
+          fill="url(#neck-wood)"
+          stroke="#b8aa8e"
+        />
+        @for (fret of neckFrets; track fret) {
+          <line
+            [attr.x1]="100 + fret * 90"
+            y1="50"
+            [attr.x2]="100 + fret * 90"
+            y2="212"
+            class="neck-fret"
+            [class.neck-nut]="fret === 0 && shape().startFret === 1"
+          />
+          @if (fret < 4) {
+            <text [attr.x]="145 + fret * 90" y="33" class="neck-fret-label">
+              {{ shape().startFret + fret }}
+            </text>
+          }
+        }
+        @for (string of neckStrings; track string) {
+          <text x="64" [attr.y]="74 + string * 24" class="neck-string-label">
+            {{ ['E', 'A', 'D', 'G', 'B', 'e'][string] }}
+          </text>
+          <text x="86" [attr.y]="74 + string * 24" class="neck-string-status">
+            {{ shape().frets[string] < 0 ? '×' : shape().frets[string] === 0 ? '○' : '' }}
+          </text>
+          <line
+            x1="100"
+            [attr.y1]="70 + string * 24"
+            x2="460"
+            [attr.y2]="70 + string * 24"
+            stroke="#918778"
+            [attr.stroke-width]="2.4 - string * 0.28"
+          />
+        }
+        @if (showHand()) {
+          <ellipse cx="269" cy="353" rx="93" ry="12" fill="#dce5cf" opacity=".65" />
+          <path
+            d="M 207 246 Q 195 247 195 269 Q 196 299 231 317 L 233 348 L 303 348 L 303 316 Q 330 298 332 270 Q 337 249 319 245 Q 274 231 207 246 Z"
+            class="grip-palm"
+          />
+          @for (finger of placements(); track finger.number) {
+            <g
+              class="posed-finger"
+              [class.emphasized]="focusedFinger() === finger.number"
+              [attr.data-finger]="finger.number"
+              [attr.data-contact-x]="finger.x"
+              [attr.data-contact-y]="finger.y"
+            >
+              <path [attr.d]="finger.path" class="finger-outline" />
+              <path [attr.d]="finger.path" class="finger-skin" />
+              @if (finger.active) {
+                <path [attr.d]="finger.path" [attr.stroke]="finger.color" class="finger-tint" />
+              }
+            </g>
+          }
+          <path d="M 232 327 Q 269 322 301 327" class="wrist-line" />
+        }
+        @for (string of neckStrings; track string) {
+          @if (shape().frets[string] > 0) {
+            <circle
+              [attr.cx]="contactX(string)"
+              [attr.cy]="70 + string * 24"
+              r="12"
+              [attr.fill]="fingers[shape().fingers[string] - 1].color"
+              class="contact-dot"
+            />
+            <text [attr.x]="contactX(string)" [attr.y]="74 + string * 24" class="finger-number">
+              {{ shape().fingers[string] }}
+            </text>
+          }
+        }
+        <text x="276" y="376" class="view-label">LEFT FRETTING HAND · NECK VIEW</text>
+      </svg>
+      <span class="hand-caption">
+        {{
+          shape().barre
+            ? 'Lay finger 1 across the marked fret; curl the other fingers onto their strings.'
+            : 'Curl your fingers over the neck and press with the fingertips at the numbered dots.'
+        }}
+        <br />
+        Illustrated grip guide; finger proportions are simplified.
+      </span>
+    </div>
+    <div class="hand-steps">
+      @for (finger of placements(); track finger.number) {
+        <button
+          class="finger-step"
+          [class.resting]="!finger.active"
+          [class.highlighted]="focusedFinger() === finger.number"
+          [attr.aria-pressed]="focusedFinger() === finger.number"
+          (click)="focus(finger.number)"
+        >
+          <span class="finger-badge" [style.background]="finger.active ? finger.color : '#a5ac9c'">
+            {{ finger.number }}
+          </span>
+          <span>
+            <strong>{{ finger.name }}</strong>
+            <small>{{ finger.instruction }}</small>
+          </span>
+          @if (finger.number === 1 && shape().barre) {
+            <span class="barre-badge">BARRE</span>
+          }
+        </button>
+      }
+      <div class="thumb-note">
+        <span>T</span>
+        <p>
+          <strong>Thumb behind the neck</strong>
+          <br />
+          Use light support; keep your wrist relaxed.
+        </p>
+      </div>
+      <div class="string-reminders">
+        @if (openStrings()) {
+          <p>
+            <b>○</b>
+            Let ring open:
+            <strong>{{ openStrings() }}</strong>
+          </p>
+        }
+        @if (mutedStrings()) {
+          <p>
+            <b>×</b>
+            Skip:
+            <strong>{{ mutedStrings() }}</strong>
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+</section>

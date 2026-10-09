@@ -1,0 +1,91 @@
+<section class="fretboard-panel panel" aria-labelledby="fretboard-title">
+  <div class="fretboard-header">
+    <div class="section-heading">
+      <span class="section-number">02</span>
+      <div>
+        <h2 id="fretboard-title">Put it on the fretboard</h2>
+        <p>Same notes. Different places. Discover how they connect.</p>
+      </div>
+    </div>
+    <div class="fretboard-actions">
+      <span class="legend">
+        <i></i>
+        Root note
+      </span>
+      <span class="legend other">
+        <i></i>
+        {{ mode() === 'scale' ? 'Scale' : 'Chord' }} note
+      </span>
+      <button
+        class="degree-toggle"
+        [attr.aria-pressed]="showDegrees()"
+        (click)="degreesChange.emit(!showDegrees())"
+      >
+        <span class="switch" [class.on]="showDegrees()"><i></i></span>
+        Show degrees
+      </button>
+    </div>
+  </div>
+  <div class="fretboard-scroll">
+    <div class="fretboard" [style.--fret-count]="fretCount">
+      <div class="fret-numbers">
+        <span></span>
+        @for (fret of frets; track fret) {
+          <span>{{ fret === 0 ? 'OPEN' : fret }}</span>
+        }
+      </div>
+      <div class="strings">
+        @for (string of strings; track $index; let stringIndex = $index) {
+          <div class="string-row" [style.--thickness]="1 + stringIndex * 0.35 + 'px'">
+            <span class="string-label">
+              {{ string.name }}
+              @if (activeShape(); as shape) {
+                <small class="string-status">
+                  {{
+                    shape.frets[5 - stringIndex] < 0
+                      ? '×'
+                      : shape.frets[5 - stringIndex] === 0
+                        ? '○'
+                        : ''
+                  }}
+                </small>
+              }
+            </span>
+            @for (fret of frets; track fret) {
+              <div class="fret-cell" [class.open]="fret === 0">
+                @if (fretNote(string.midi, fret); as note) {
+                  <button
+                    class="fret-note"
+                    [class.root-fret]="note.interval === 0"
+                    [class.shape-position-note]="fingerAt(stringIndex, fret) !== null"
+                    [class.focused]="selectedPitch() === note.pitch"
+                    (click)="noteSelected.emit({ pitch: note.pitch, midi: string.midi + fret })"
+                    [attr.aria-label]="positionDescription(stringIndex, string.midi, fret)"
+                  >
+                    {{ positionLabel(stringIndex, string.midi, fret) }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="fret-markers">
+        <span></span>
+        @for (fret of frets; track fret) {
+          <span>{{ [3, 5, 7, 9, 15].includes(fret) ? '●' : fret === 12 ? '● ●' : '' }}</span>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="fretboard-footer">
+    <span>↖ Click any highlighted note to hear it</span>
+    <span>
+      {{ fretCount }} frets
+      <span class="footer-dot">·</span>
+      6 strings
+      <span class="footer-dot">·</span>
+      Endless possibilities
+    </span>
+  </div>
+</section>

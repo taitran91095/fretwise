@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+.diagram-line {
+  stroke: #a6b398;
+  stroke-width: 1.5;
+}
+.diagram-nut {
+  stroke: #44583a;
+  stroke-width: 4;
+}
+.diagram-dot,
+.diagram-barre {
+  fill: #35553c;
+}
+.diagram-finger {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.diagram-string,
+.diagram-status {
+  text-anchor: middle;
+  fill: #354c30;
+  font-size: 11px;
+  font-weight: 600;
+}
+.diagram-status {
+  font-size: 17px;
+}
+.diagram-fret {
+  font-size: 10px;
+  fill: #5f754e;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  margin: 12px 0 6px;
+}

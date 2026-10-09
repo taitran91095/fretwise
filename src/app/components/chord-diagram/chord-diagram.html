@@ -1,0 +1,54 @@
+<svg viewBox="0 0 180 160" role="img" [attr.aria-label]="shapeSummary(shape())">
+  <text x="4" y="57" class="diagram-fret">{{ shape().startFret }}fr</text>
+  @for (row of diagramFrets; track row) {
+    <line
+      x1="35"
+      [attr.y1]="35 + row * 25"
+      x2="160"
+      [attr.y2]="35 + row * 25"
+      [attr.class]="row === 0 && shape().startFret === 1 ? 'diagram-nut' : 'diagram-line'"
+    />
+  }
+  @for (string of diagramStrings; track string) {
+    <line
+      [attr.x1]="35 + string * 25"
+      y1="35"
+      [attr.x2]="35 + string * 25"
+      y2="135"
+      class="diagram-line"
+    />
+    <text [attr.x]="35 + string * 25" y="22" class="diagram-status">
+      {{ shape().frets[string] < 0 ? '×' : shape().frets[string] === 0 ? '○' : '' }}
+    </text>
+    <text [attr.x]="35 + string * 25" y="154" class="diagram-string">
+      {{ ['E', 'A', 'D', 'G', 'B', 'e'][string] }}
+    </text>
+  }
+  @if (shape().barre; as barre) {
+    <rect
+      [attr.x]="25 + barre.from * 25"
+      [attr.y]="37 + (barre.fret - shape().startFret) * 25"
+      [attr.width]="(barre.to - barre.from) * 25 + 20"
+      height="21"
+      rx="10"
+      class="diagram-barre"
+    />
+  }
+  @for (string of diagramStrings; track string) {
+    @if (shape().frets[string] > 0) {
+      <circle
+        [attr.cx]="35 + string * 25"
+        [attr.cy]="47.5 + (shape().frets[string] - shape().startFret) * 25"
+        r="10.5"
+        class="diagram-dot"
+      />
+      <text
+        [attr.x]="35 + string * 25"
+        [attr.y]="51.5 + (shape().frets[string] - shape().startFret) * 25"
+        class="diagram-finger"
+      >
+        {{ shape().fingers[string] }}
+      </text>
+    }
+  }
+</svg>

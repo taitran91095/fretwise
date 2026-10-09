@@ -1,0 +1,239 @@
+:host {
+  display: block;
+}
+.fretboard-panel {
+  margin-top: 23px;
+  padding: 25px 27px 0;
+}
+.fretboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.fretboard-header .section-heading {
+  align-items: flex-start;
+}
+.fretboard-header .section-number {
+  margin-top: 1px;
+}
+.fretboard-header p {
+  font-size: 10px;
+  color: #959d8c;
+  margin: 7px 0 0;
+}
+.fretboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  font-size: 9px;
+  color: #929c85;
+}
+.legend {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+}
+.legend i {
+  width: 8px;
+  height: 8px;
+  background: #36563d;
+  border-radius: 50%;
+}
+.legend.other i {
+  background: #dce8c4;
+  border: 1px solid #c3d5a7;
+}
+.degree-toggle {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 9px;
+  border: 0;
+  border-left: 1px solid #e5eadf;
+  padding: 0 0 0 17px;
+  background: transparent;
+  color: #86917a;
+  white-space: nowrap;
+}
+.switch {
+  width: 25px;
+  height: 14px;
+  background: #e0e5d9;
+  border-radius: 9px;
+  padding: 2px;
+  display: flex;
+}
+.switch i {
+  background: #fff;
+  box-shadow: 0 1px 2px #0002;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch.on {
+  background: #56714d;
+}
+.switch.on i {
+  transform: translateX(11px);
+}
+.fretboard-scroll {
+  overflow-x: auto;
+  padding: 26px 0 4px;
+}
+.fretboard {
+  min-width: 900px;
+}
+.fret-numbers,
+.string-row,
+.fret-markers {
+  display: grid;
+  grid-template-columns: 24px 45px repeat(var(--fret-count), minmax(0, 1fr));
+}
+.fret-numbers {
+  font-size: 9px;
+  color: #8b967e;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 17px;
+}
+.fret-numbers span:nth-child(2) {
+  font-size: 7px;
+  letter-spacing: 0.5px;
+}
+.strings {
+  padding: 6px 0;
+  background: linear-gradient(90deg, transparent 69px, #f5f3e9 69px, #faf9f3 100%);
+  border-radius: 5px;
+}
+.string-row {
+  height: 35px;
+  align-items: center;
+}
+.string-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #87927a;
+}
+.fret-cell {
+  height: 35px;
+  position: relative;
+  border-right: 2px solid #d9dacb;
+  display: grid;
+  place-items: center;
+}
+.fret-cell:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--thickness);
+  background: #b5b9a6;
+  box-shadow: 0 1px 0 #fff;
+}
+.fret-cell.open {
+  border-right: 4px solid #a5ad95;
+}
+.fret-cell.open:before {
+  left: 9px;
+}
+.fret-note {
+  position: relative;
+  z-index: 1;
+  width: 31px;
+  height: 31px;
+  border: 2px solid #9eb580;
+  border-radius: 50%;
+  background: #e0eaca;
+  font-size: 12px;
+  font-weight: 700;
+  color: #26432b;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 1;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.fret-note:hover {
+  transform: scale(1.16);
+}
+.root-fret {
+  background: #36573e;
+  border-color: #36573e;
+  color: #fff;
+}
+.fret-note.focused {
+  outline: 2px solid #648344;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #fff;
+}
+.fret-markers {
+  height: 24px;
+  align-items: end;
+  text-align: center;
+  font-size: 7px;
+  color: #b2baa4;
+}
+.fretboard-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #9aa38d;
+  padding: 15px 0 17px;
+  margin-top: 10px;
+  border-top: 1px solid #edf0e8;
+  gap: 15px;
+}
+.footer-dot {
+  margin: 0 8px;
+  color: #c2cbb7;
+}
+@media (max-width: 1100px) {
+  .fretboard-header {
+    align-items: flex-start;
+  }
+  .fretboard-actions {
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 760px) {
+  .fretboard-panel {
+    padding: 22px 18px 0;
+  }
+  .fretboard-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .fretboard-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 15px;
+  }
+  .degree-toggle {
+    margin-left: auto;
+  }
+}
+.fret-note.shape-position-note {
+  border-color: #805c24;
+  outline: 2px solid #c29542;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #fff;
+}
+.string-label {
+  position: relative;
+}
+.string-status {
+  position: absolute;
+  top: -13px;
+  left: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #805c24;
+}

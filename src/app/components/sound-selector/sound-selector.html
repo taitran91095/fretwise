@@ -1,0 +1,69 @@
+<aside class="controls panel">
+  <div class="section-heading">
+    <span class="section-number">01</span>
+    <h2>Choose your sound</h2>
+  </div>
+  <div class="segmented" aria-label="Explore type">
+    <button
+      [class.active]="mode() === 'scale'"
+      [attr.aria-pressed]="mode() === 'scale'"
+      (click)="modeChange.emit('scale')"
+    >
+      Scales
+    </button>
+    <button
+      [class.active]="mode() === 'chord'"
+      [attr.aria-pressed]="mode() === 'chord'"
+      (click)="modeChange.emit('chord')"
+    >
+      Chords
+    </button>
+  </div>
+  <label for="root">
+    Root note
+    <span>The note you call home</span>
+  </label>
+  <div class="select-wrap">
+    <select id="root" [value]="root()" (change)="onRootChange($event)">
+      @for (note of roots; track note) {
+        <option [value]="note">{{ note }}</option>
+      }
+    </select>
+  </div>
+  <label for="scale">
+    {{ mode() === 'scale' ? 'Scale type' : 'Chord family' }}
+    <span>Give it a little character</span>
+  </label>
+  <div class="select-wrap">
+    <select id="scale" [value]="scaleKey()" (change)="onScaleChange($event)">
+      @for (option of scaleOptions; track option.key) {
+        @if (mode() === 'scale' || option.key === 'major' || option.key === 'minor') {
+          <option [value]="option.key">
+            {{ mode() === 'chord' && option.key === 'minor' ? 'Minor' : option.name }}
+          </option>
+        }
+      }
+    </select>
+  </div>
+  <div class="sound-description">
+    <span class="sparkle">✧</span>
+    <div>
+      <h3>{{ mode() === 'scale' ? scale().name + ' feeling' : 'Three notes. One chord.' }}</h3>
+      <p>
+        {{
+          mode() === 'scale'
+            ? scale().mood
+            : 'A triad brings together the root, third, and fifth. These notes give your chord its sound.'
+        }}
+      </p>
+    </div>
+  </div>
+  <div class="tuning">
+    <span>♬</span>
+    <div>
+      Standard tuning
+      <small>E · A · D · G · B · E</small>
+    </div>
+    <span class="tuning-check">✓</span>
+  </div>
+</aside>
