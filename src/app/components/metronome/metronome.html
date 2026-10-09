@@ -37,6 +37,20 @@
   </select>
   <button (click)="tapTempo()">Tap tempo</button>
 </div>
+<label class="volume-control" for="metronome-volume">
+  <span>Volume</span>
+  <input
+    id="metronome-volume"
+    type="range"
+    min="0"
+    max="100"
+    [value]="engine.volume()"
+    (input)="changeVolume($event)"
+  />
+  <output for="metronome-volume">
+    {{ engine.volume() === 0 ? 'Muted' : engine.volume() + '%' }}
+  </output>
+</label>
 <button class="start-button" (click)="toggle()">
   {{ engine.playing() ? 'Stop metronome' : 'Start metronome' }}
 </button>

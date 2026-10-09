@@ -28,6 +28,17 @@ describe('Metronome controls', () => {
     expect(element.querySelectorAll('.beat-indicators span')).toHaveLength(3);
   });
 
+  it('changes volume through its slider and shows when muted', () => {
+    const { fixture, element, engine } = setup();
+    const slider = element.querySelector('#metronome-volume') as HTMLInputElement;
+    expect(slider.value).toBe('80');
+    slider.value = '0';
+    slider.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(engine.volume()).toBe(0);
+    expect(element.querySelector('output')?.textContent?.trim()).toBe('Muted');
+  });
+
   it('estimates tempo from evenly spaced taps and resets after a pause', () => {
     vi.useFakeTimers();
     const { fixture, engine } = setup();

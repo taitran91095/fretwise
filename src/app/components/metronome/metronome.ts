@@ -17,6 +17,10 @@ export class Metronome implements OnDestroy {
     this.engine.setBpm(Number((event.target as HTMLInputElement).value));
   }
 
+  changeVolume(event: Event): void {
+    this.engine.setVolume(Number((event.target as HTMLInputElement).value));
+  }
+
   changeBeats(event: Event): void {
     this.engine.setBeats(Number((event.target as HTMLSelectElement).value));
   }

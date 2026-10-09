@@ -10,9 +10,11 @@ describe('MetronomeEngine', () => {
     start: ReturnType<typeof vi.fn>;
     stop: ReturnType<typeof vi.fn>;
   }> = [];
+  const gains: Array<{ linearRampToValueAtTime: ReturnType<typeof vi.fn> }> = [];
   beforeEach(() => {
     vi.useFakeTimers();
     clicks.length = 0;
+    gains.length = 0;
     resume = vi.fn().mockResolvedValue(undefined);
     close = vi.fn().mockResolvedValue(undefined);
     const epoch = Date.now();
@@ -38,8 +40,14 @@ describe('MetronomeEngine', () => {
           return oscillator;
         }
         createGain() {
+          const gain = {
+            setValueAtTime: vi.fn(),
+            exponentialRampToValueAtTime: vi.fn(),
+            linearRampToValueAtTime: vi.fn(),
+          };
+          gains.push(gain);
           return {
-            gain: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn() },
+            gain,
             connect: vi.fn(),
             disconnect: vi.fn(),
           };
@@ -88,6 +96,28 @@ describe('MetronomeEngine', () => {
     resolve();
     await pending;
     expect(clicks).toHaveLength(0);
+  });
+
+  it('uses a louder default click and applies volume changes to subsequent beats', async () => {
+    await engine.start();
+    expect(engine.volume()).toBe(80);
+    expect(gains[0].linearRampToValueAtTime.mock.calls[0][0]).toBeCloseTo(0.6);
+    engine.setVolume(40);
+    await vi.advanceTimersByTimeAsync(800);
+    expect(gains[1].linearRampToValueAtTime.mock.calls[0][0]).toBeCloseTo(0.3);
+  });
+
+  it('keeps the visual beat running when volume is muted', async () => {
+    engine.setVolume(0);
+    await engine.start();
+    await vi.advanceTimersByTimeAsync(50);
+    expect(clicks).toHaveLength(0);
+    expect(engine.beat()).toBe(1);
+    expect(engine.playing()).toBe(true);
+    engine.setVolume(200);
+    expect(engine.volume()).toBe(100);
+    engine.setVolume(-1);
+    expect(engine.volume()).toBe(0);
   });
 
   it('clamps tempo and bar length to usable limits', () => {

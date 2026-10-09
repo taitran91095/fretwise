@@ -11,7 +11,7 @@ An Angular guitar practice app for exploring scales, chords, fingerings, and han
 - Major chords in all five CAGED families (C, A, G, E, D), plus a smaller G-shaped grip. Minor chords offer E, A, and D grips; seventh and suspended chords include practical open and movable grips. Open and movable positions include strummed playback.
 - A left hand gripping the neck with fingers at the selected string/fret positions. Toggle Player’s view for high e at the top and the hand above the neck. Hand proportions are simplified; hide the hand to inspect the contact points.
 - A 15-fret interactive fretboard, with root notes, finger numbers, and a degree toggle.
-- Floating metronome with adjustable tempo, tap tempo, and accented bars; microphone tuner with automatic note detection and standard-string targets. Tuner audio stays on your device and the microphone stops when the tool closes.
+- Floating metronome with adjustable tempo and volume, tap tempo, and accented bars; microphone tuner with automatic note detection and standard-string targets. Tuner audio stays on your device and the microphone stops when the tool closes.
 - Installable PWA with offline app caching, home-screen icons, and a prompt when an updated version is ready.
 - Responsive layouts and keyboard-accessible controls.
 

@@ -4,6 +4,7 @@ import { Injectable, OnDestroy, signal } from '@angular/core';
 export class MetronomeEngine implements OnDestroy {
   readonly bpm = signal(80);
   readonly beatsPerBar = signal(4);
+  readonly volume = signal(80);
   readonly playing = signal(false);
   readonly beat = signal(0);
   readonly error = signal('');
@@ -23,6 +24,10 @@ export class MetronomeEngine implements OnDestroy {
     if (!Number.isFinite(value)) return;
     this.beatsPerBar.set(Math.max(1, Math.min(8, Math.round(value))));
     this.nextBeat = 0;
+  }
+
+  setVolume(value: number): void {
+    if (Number.isFinite(value)) this.volume.set(Math.max(0, Math.min(100, Math.round(value))));
   }
 
   async start(): Promise<void> {
@@ -70,21 +75,7 @@ export class MetronomeEngine implements OnDestroy {
     while (this.nextBeatTime < context.currentTime + 0.1) {
       const beat = this.nextBeat;
       const time = this.nextBeatTime;
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.frequency.value = beat === 0 ? 1200 : 800;
-      gain.gain.setValueAtTime(0.18, time);
-      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.045);
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-      this.oscillators.add(oscillator);
-      oscillator.onended = () => {
-        this.oscillators.delete(oscillator);
-        oscillator.disconnect();
-        gain.disconnect();
-      };
-      oscillator.start(time);
-      oscillator.stop(time + 0.05);
+      if (this.volume() > 0) this.playClick(beat, time);
       const timer = setTimeout(
         () => {
           this.beat.set(beat + 1);
@@ -96,5 +87,29 @@ export class MetronomeEngine implements OnDestroy {
       this.nextBeatTime += 60 / this.bpm();
       this.nextBeat = (beat + 1) % this.beatsPerBar();
     }
+  }
+
+  private playClick(beat: number, time: number): void {
+    const context = this.context!;
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const peak = 0.75 * (this.volume() / 100);
+    oscillator.frequency.value = beat === 0 ? 1200 : 800;
+    // A stronger, longer click with a short attack avoids an abrupt volume jump.
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(peak, time + 0.002);
+    gain.gain.setValueAtTime(peak, time + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
+    gain.gain.linearRampToValueAtTime(0, time + 0.07);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    this.oscillators.add(oscillator);
+    oscillator.onended = () => {
+      this.oscillators.delete(oscillator);
+      oscillator.disconnect();
+      gain.disconnect();
+    };
+    oscillator.start(time);
+    oscillator.stop(time + 0.075);
   }
 }

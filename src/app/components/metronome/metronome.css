@@ -110,3 +110,22 @@
   color: #964c38;
   line-height: 1.5;
 }
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 11px;
+  color: #365d45;
+}
+.volume-control input {
+  flex: 1;
+  min-width: 0;
+  accent-color: #365d45;
+}
+.volume-control output {
+  min-width: 38px;
+  text-align: right;
+  color: #687a66;
+}
