@@ -66,6 +66,27 @@
   background: #8ca075;
   border-radius: 50%;
 }
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #dce2d8;
+  border-radius: 9px;
+  color: #284d3d;
+  font-size: 12px;
+  font-weight: 600;
+}
+.github-link:hover {
+  background: #eef2e5;
+  border-color: #8ca075;
+}
+.github-link:focus-visible {
+  outline: 2px solid #284d3d;
+  outline-offset: 3px;
+}
 main {
   max-width: 1280px;
   padding: 43px 40px 0;
@@ -229,6 +250,9 @@ footer > span:last-child {
   .header-end {
     display: none;
   }
+  .github-link {
+    margin-left: auto;
+  }
   .tip-decoration {
     display: none;
   }
@@ -239,7 +263,7 @@ footer > span:last-child {
     padding: 0 22px;
   }
   .tagline {
-    font-size: 10px;
+    display: none;
   }
   .header-divider {
     display: none;
