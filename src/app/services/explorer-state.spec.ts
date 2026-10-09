@@ -44,6 +44,21 @@ describe('ExplorerState', () => {
     expect(stop).toHaveBeenCalled();
   });
 
+  it('selects seventh and suspended chords without changing the scale selection', () => {
+    state.setMode('chord');
+    state.setChord('maj7');
+    expect(state.name()).toBe('C major 7 (maj7)');
+    expect(state.notes().map((note) => note.name)).toEqual(['C', 'E', 'G', 'B']);
+    state.setRoot('F');
+    expect(state.chordKey()).toBe('maj7');
+    expect(state.notes().map((note) => note.name)).toEqual(['F', 'A', 'C', 'E']);
+    state.setChord('sus4');
+    expect(state.notes().map((note) => note.name)).toEqual(['F', 'B♭', 'C']);
+    state.setMode('scale');
+    expect(state.scaleKey()).toBe('major');
+    expect(state.notes()).toHaveLength(7);
+  });
+
   it('clears the selected grip without changing the chord notes', () => {
     state.setMode('chord');
     state.chooseShape(null);

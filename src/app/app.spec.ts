@@ -41,6 +41,28 @@ describe('App integration', () => {
     expect(element.querySelector('[data-finger="1"]')?.getAttribute('data-contact-y')).toBe('70');
   });
 
+  it('updates formulas, note roles, and the selected grip for seventh and suspended chords', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    (element.querySelectorAll('.segmented button')[1] as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const family = element.querySelector('#scale') as HTMLSelectElement;
+    family.value = 'maj7';
+    family.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.note-card')).toHaveLength(4);
+    expect(element.querySelector('.formula')?.textContent).toContain('1 · 3 · 5 · 7');
+    expect(element.querySelectorAll('.note-caption')[3].textContent).toContain('SEVENTH');
+    expect(element.querySelector('.hand-heading')?.textContent).toContain('C major 7');
+    family.value = 'sus4';
+    family.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.note-card')).toHaveLength(3);
+    expect(element.querySelector('.formula')?.textContent).toContain('1 · 4 · 5');
+    expect(element.querySelectorAll('.note-caption')[1].textContent).toContain('FOURTH');
+  });
+
   it('wires scale playback and stop controls to the audio service', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();

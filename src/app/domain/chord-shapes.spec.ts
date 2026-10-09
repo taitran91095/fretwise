@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getChordShapes, describeShape, shapeFretRange, shapeInstruction } from './chord-shapes';
-import { getNotes, ROOTS } from './music';
+import { getNotes, getChordNotes, CHORD_OPTIONS, ROOTS } from './music';
 import { STANDARD_TUNING, FRET_COUNT } from './instrument';
 
 describe('Chord shapes', () => {
@@ -50,6 +50,39 @@ describe('Chord shapes', () => {
 
   it('finds the same chord shapes for enharmonic root names', () => {
     expect(getChordShapes('C♯', false)).toEqual(getChordShapes('D♭', false));
+  });
+
+  it('matches every grip to its chord tones for all seven families and every root', () => {
+    for (const root of ROOTS)
+      for (const { key } of CHORD_OPTIONS) {
+        const expected = getChordNotes(root, key)
+          .map((note) => note.pitch)
+          .sort((a, b) => a - b);
+        const shapes = getChordShapes(root, key);
+        expect(shapes.length).toBeGreaterThan(0);
+        for (const shape of shapes) {
+          const pitches = shape.frets.flatMap((fret, index) =>
+            fret < 0 ? [] : [(STANDARD_TUNING[index].midi + fret) % 12],
+          );
+          const played = [...new Set(pitches)].sort((a, b) => a - b);
+          const expectedVoicing = shape.omittedFifth
+            ? expected.filter((pitch) => pitch !== (getChordNotes(root, key)[0].pitch + 7) % 12)
+            : expected;
+          expect(played).toEqual(expectedVoicing);
+          shape.frets.forEach((fret, index) => {
+            expect(fret).toBeLessThanOrEqual(FRET_COUNT);
+            if (fret > 0) {
+              expect(shape.fingers[index]).toBeGreaterThan(0);
+              expect(shape.fingers[index]).toBeLessThanOrEqual(4);
+              expect(fret).toBeLessThan(shape.startFret + 4);
+            } else expect(shape.fingers[index]).toBe(0);
+          });
+          if (shape.barre)
+            for (let string = shape.barre.from; string <= shape.barre.to; string++) {
+              expect(shape.frets[string]).toBeGreaterThanOrEqual(shape.barre.fret);
+            }
+        }
+      }
   });
 
   it('provides playable complete triads within the displayed frets for every root and family', () => {

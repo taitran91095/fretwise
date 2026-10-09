@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Note, ScaleDefinition } from '../../domain/music';
+import { Note, ScaleDefinition, CHORDS, ChordKey } from '../../domain/music';
 import { ExploreMode, PlayableNote } from '../../domain/explorer';
 
 @Component({
@@ -12,7 +12,8 @@ export class NoteExplorer {
   readonly notes = input.required<Note[]>();
   readonly scale = input.required<ScaleDefinition>();
   readonly mode = input.required<ExploreMode>();
-  readonly minor = input(false);
+  readonly chordKey = input<ChordKey>('major');
+  readonly chords = CHORDS;
   readonly selectedPitch = input<number | null>(null);
   readonly playing = input(false);
   readonly audioError = input('');

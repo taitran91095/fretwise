@@ -1,0 +1,120 @@
+:host {
+  display: block;
+}
+.tool-description {
+  font-size: 12px;
+  color: #687a66;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.string-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+}
+.string-select select {
+  padding: 9px;
+  border: 1px solid #dbe3d2;
+  border-radius: 7px;
+  color: #365d45;
+  background: white;
+  max-width: 80%;
+}
+.tuner-note {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  padding: 10px 0;
+  color: #365d45;
+}
+.tuner-note strong {
+  font:
+    650 64px Manrope,
+    sans-serif;
+}
+.tuner-note span {
+  font-size: 18px;
+  margin-left: 3px;
+}
+.tuner-note.in-tune {
+  color: #497b36;
+}
+.tuning-meter {
+  height: 28px;
+  position: relative;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(10% - 1px),
+    #ccd7c1 calc(10% - 1px),
+    #ccd7c1 10%
+  );
+  border-bottom: 1px solid #ccd7c1;
+}
+.center-zone {
+  position: absolute;
+  left: 45%;
+  width: 10%;
+  height: 100%;
+  background: #dfeecd;
+}
+.center-mark {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  width: 1px;
+  background: #7d9a63;
+}
+.needle {
+  position: absolute;
+  width: 3px;
+  height: 35px;
+  top: -5px;
+  background: #284d3d;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.meter-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: #687a66;
+}
+.pitch-status {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 20px 0 5px;
+}
+.frequency {
+  text-align: center;
+  font-size: 11px;
+  color: #687a66;
+  min-height: 17px;
+  margin: 0 0 18px;
+}
+.start-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9px;
+  background: #284d3d;
+  color: white;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+.privacy-note {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #687a66;
+  margin: 12px 0 0;
+}
+.tool-error {
+  font-size: 12px;
+  color: #964c38;
+  line-height: 1.5;
+}

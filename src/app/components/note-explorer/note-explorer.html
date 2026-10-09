@@ -35,12 +35,10 @@
         <strong>{{ note.name }}</strong>
         <span class="note-caption">
           {{
-            $index === 0
-              ? 'ROOT'
-              : mode() === 'chord'
-                ? $index === 1
-                  ? 'THIRD'
-                  : 'FIFTH'
+            mode() === 'chord'
+              ? chords[chordKey()].roles[$index].toUpperCase()
+              : $index === 0
+                ? 'ROOT'
                 : 'NOTE ' + ($index + 1)
           }}
         </span>
@@ -50,10 +48,12 @@
   <div class="formula">
     <span>{{ mode() === 'scale' ? 'THE PATTERN' : 'THE FORMULA' }}</span>
     <strong>
-      {{ mode() === 'scale' ? scale().formula : minor() ? '1 · ♭3 · 5' : '1 · 3 · 5' }}
+      {{ mode() === 'scale' ? scale().formula : chords[chordKey()].labels.join(' · ') }}
     </strong>
     <span class="formula-help">
-      {{ mode() === 'scale' ? 'W = whole step · H = half step' : 'Root · third · fifth' }}
+      {{
+        mode() === 'scale' ? 'W = whole step · H = half step' : chords[chordKey()].roles.join(' · ')
+      }}
     </span>
   </div>
   <div class="note-hint">

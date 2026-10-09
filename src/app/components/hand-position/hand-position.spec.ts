@@ -26,11 +26,48 @@ describe('HandPosition', () => {
   });
 
   it('hides the hand while preserving all contact points', () => {
-    (element.querySelector('.pose-toolbar button') as HTMLButtonElement).click();
+    (element.querySelector('.hand-toggle') as HTMLButtonElement).click();
     fixture.detectChanges();
     expect(element.querySelectorAll('.posed-finger')).toHaveLength(0);
     expect(element.querySelectorAll('.contact-dot')).toHaveLength(3);
-    expect(element.querySelector('.pose-toolbar button')?.textContent?.trim()).toBe('Show hand');
+    expect(element.querySelector('.hand-toggle')?.textContent?.trim()).toBe('Show hand');
+  });
+
+  it('reverses string order and hand geometry while keeping labels upright', () => {
+    const toggle = element.querySelector('.view-toggle') as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    const labels = [...element.querySelectorAll('.neck-string-label')];
+    const lowE = labels[0];
+    const highE = labels[5];
+    expect(Number(highE.getAttribute('y'))).toBeLessThan(Number(lowE.getAttribute('y')));
+    expect(element.querySelector('.hand-geometry')?.getAttribute('transform')).toBe(
+      'translate(0 380) scale(1 -1)',
+    );
+    expect(element.querySelector('.finger-number')?.getAttribute('transform')).toBeNull();
+    expect(element.querySelector('[data-finger="1"]')?.getAttribute('data-contact-y')).toBe('214');
+    expect(element.querySelector('svg')?.getAttribute('aria-label')).toContain('Player’s view');
+    toggle.click();
+    fixture.detectChanges();
+    expect(element.querySelector('.hand-geometry')?.getAttribute('transform')).toBeNull();
+    expect(element.querySelector('[data-finger="1"]')?.getAttribute('data-contact-y')).toBe('166');
+  });
+
+  it('keeps the reversed view when changing shapes or hiding the hand', () => {
+    (element.querySelector('.view-toggle') as HTMLButtonElement).click();
+    fixture.componentRef.setInput(
+      'shape',
+      getChordShapes('E', false).find((shape) => shape.id === 'C'),
+    );
+    fixture.detectChanges();
+    expect(element.querySelector('[data-finger="1"]')?.getAttribute('data-contact-y')).toBe('238');
+    expect(element.querySelectorAll('.contact-dot')).toHaveLength(5);
+    (element.querySelector('.hand-toggle') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(element.querySelector('.hand-geometry')).toBeNull();
+    expect(element.querySelectorAll('.contact-dot')).toHaveLength(5);
+    expect(element.querySelector('.view-toggle')?.getAttribute('aria-pressed')).toBe('true');
   });
 
   it('updates the grip when a barre shape is selected', () => {

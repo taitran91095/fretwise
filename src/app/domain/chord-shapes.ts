@@ -1,5 +1,5 @@
 import { STANDARD_TUNING, FRET_COUNT } from './instrument';
-import { pitchClass, CHROMATIC } from './music';
+import { pitchClass, CHROMATIC, ChordKey } from './music';
 
 export type CagedFamily = 'C' | 'A' | 'G' | 'E' | 'D';
 
@@ -9,13 +9,14 @@ export interface ChordShape {
   name: string;
   group: 'Open position' | 'CAGED positions';
   hint?: string;
+  omittedFifth?: boolean;
   frets: number[]; // Low E to high e; -1 = muted, 0 = open.
   fingers: number[]; // 1 = index, 2 = middle, 3 = ring, 4 = pinky.
   startFret: number;
   barre?: { fret: number; from: number; to: number };
 }
-type ChordQuality = 'major' | 'minor';
 interface Fingering {
+  omittedFifth?: boolean;
   frets: number[];
   fingers: number[];
 }
@@ -29,6 +30,22 @@ const OPEN_FINGERINGS: Record<string, Fingering> = {
   'D-minor': { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 0, 2, 3, 1] },
   'E-minor': { frets: [0, 2, 2, 0, 0, 0], fingers: [0, 2, 3, 0, 0, 0] },
   'A-minor': { frets: [-1, 0, 2, 2, 1, 0], fingers: [0, 0, 2, 3, 1, 0] },
+  'C-maj7': { frets: [-1, 3, 2, 0, 0, 0], fingers: [0, 3, 2, 0, 0, 0] },
+  'E-maj7': { frets: [0, 2, 1, 1, 0, 0], fingers: [0, 3, 1, 2, 0, 0] },
+  'A-maj7': { frets: [-1, 0, 2, 1, 2, 0], fingers: [0, 0, 2, 1, 3, 0] },
+  'G-maj7': { frets: [3, 2, 0, 0, 0, 2], fingers: [3, 2, 0, 0, 0, 1] },
+  'C-dominant7': { frets: [-1, 3, 2, 3, 1, 0], fingers: [0, 3, 2, 4, 1, 0], omittedFifth: true },
+  'E-dominant7': { frets: [0, 2, 0, 1, 0, 0], fingers: [0, 2, 0, 1, 0, 0] },
+  'A-dominant7': { frets: [-1, 0, 2, 0, 2, 0], fingers: [0, 0, 1, 0, 2, 0] },
+  'D-dominant7': { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3] },
+  'G-dominant7': { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1] },
+  'E-minor7': { frets: [0, 2, 0, 0, 0, 0], fingers: [0, 2, 0, 0, 0, 0] },
+  'A-minor7': { frets: [-1, 0, 2, 0, 1, 0], fingers: [0, 0, 2, 0, 1, 0] },
+  'A-sus2': { frets: [-1, 0, 2, 2, 0, 0], fingers: [0, 0, 1, 2, 0, 0] },
+  'D-sus2': { frets: [-1, -1, 0, 2, 3, 0], fingers: [0, 0, 0, 1, 3, 0] },
+  'E-sus4': { frets: [0, 2, 2, 2, 0, 0], fingers: [0, 1, 2, 3, 0, 0] },
+  'A-sus4': { frets: [-1, 0, 2, 2, 3, 0], fingers: [0, 0, 1, 2, 3, 0] },
+  'D-sus4': { frets: [-1, -1, 0, 2, 3, 3], fingers: [0, 0, 0, 1, 2, 3] },
 };
 
 interface MovableFingering extends Fingering {
@@ -40,6 +57,11 @@ interface CagedTemplate {
   hint?: string;
   major: MovableFingering;
   minor?: MovableFingering;
+  maj7?: MovableFingering;
+  minor7?: MovableFingering;
+  dominant7?: MovableFingering;
+  sus2?: MovableFingering;
+  sus4?: MovableFingering;
 }
 
 // Offsets are measured from the virtual nut; -1 means a muted string.
@@ -55,6 +77,15 @@ const CAGED_TEMPLATES: CagedTemplate[] = [
     rootPitch: 9,
     major: { frets: [-1, 0, 2, 2, 2, 0], fingers: [0, 1, 2, 3, 4, 1], barre: { from: 1, to: 5 } },
     minor: { frets: [-1, 0, 2, 2, 1, 0], fingers: [0, 1, 3, 4, 2, 1], barre: { from: 1, to: 5 } },
+    maj7: { frets: [-1, 0, 2, 1, 2, 0], fingers: [0, 1, 3, 2, 4, 1], barre: { from: 1, to: 5 } },
+    minor7: { frets: [-1, 0, 2, 0, 1, 0], fingers: [0, 1, 3, 1, 2, 1], barre: { from: 1, to: 5 } },
+    dominant7: {
+      frets: [-1, 0, 2, 0, 2, 0],
+      fingers: [0, 1, 3, 1, 4, 1],
+      barre: { from: 1, to: 5 },
+    },
+    sus2: { frets: [-1, 0, 2, 2, 0, 0], fingers: [0, 1, 3, 4, 1, 1], barre: { from: 1, to: 5 } },
+    sus4: { frets: [-1, 0, 2, 2, 3, 0], fingers: [0, 1, 2, 3, 4, 1], barre: { from: 1, to: 5 } },
   },
   {
     family: 'G',
@@ -67,6 +98,14 @@ const CAGED_TEMPLATES: CagedTemplate[] = [
     rootPitch: 4,
     major: { frets: [0, 2, 2, 1, 0, 0], fingers: [1, 3, 4, 2, 1, 1], barre: { from: 0, to: 5 } },
     minor: { frets: [0, 2, 2, 0, 0, 0], fingers: [1, 3, 4, 1, 1, 1], barre: { from: 0, to: 5 } },
+    maj7: { frets: [0, 2, 1, 1, 0, 0], fingers: [1, 4, 2, 3, 1, 1], barre: { from: 0, to: 5 } },
+    minor7: { frets: [0, 2, 0, 0, 0, 0], fingers: [1, 3, 1, 1, 1, 1], barre: { from: 0, to: 5 } },
+    dominant7: {
+      frets: [0, 2, 0, 1, 0, 0],
+      fingers: [1, 3, 1, 2, 1, 1],
+      barre: { from: 0, to: 5 },
+    },
+    sus4: { frets: [0, 2, 2, 2, 0, 0], fingers: [1, 2, 3, 4, 1, 1], barre: { from: 0, to: 5 } },
   },
   {
     family: 'D',
@@ -74,12 +113,15 @@ const CAGED_TEMPLATES: CagedTemplate[] = [
     hint: 'Four-string grip · no barre',
     major: { frets: [-1, -1, 0, 2, 3, 2], fingers: [0, 0, 1, 2, 4, 3] },
     minor: { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 1, 3, 4, 2] },
+    sus2: { frets: [-1, -1, 0, 2, 3, 0], fingers: [0, 0, 1, 3, 4, 1], barre: { from: 2, to: 5 } },
+    sus4: { frets: [-1, -1, 0, 2, 3, 3], fingers: [0, 0, 1, 2, 3, 4] },
   },
 ];
 
-export function getChordShapes(root: string, minor: boolean): ChordShape[] {
+export function getChordShapes(root: string, qualityOrMinor: ChordKey | boolean): ChordShape[] {
   const rootPitch = pitchClass(root);
-  const quality: ChordQuality = minor ? 'minor' : 'major';
+  const quality: ChordKey =
+    typeof qualityOrMinor === 'boolean' ? (qualityOrMinor ? 'minor' : 'major') : qualityOrMinor;
   const shapes: ChordShape[] = [];
   const open = OPEN_FINGERINGS[`${CHROMATIC[rootPitch]}-${quality}`];
 
@@ -92,6 +134,7 @@ export function getChordShapes(root: string, minor: boolean): ChordShape[] {
       startFret: 1,
       frets: [...open.frets],
       fingers: [...open.fingers],
+      ...(open.omittedFifth ? { omittedFifth: true, hint: 'Classic grip · fifth omitted' } : {}),
     });
   }
 
@@ -106,7 +149,7 @@ export function getChordShapes(root: string, minor: boolean): ChordShape[] {
       family: template.family,
       name: `${template.family}-shape${fingering.barre ? ' barre' : ' grip'}`,
       group: 'CAGED positions',
-      hint: template.hint,
+      hint: quality === 'major' || quality === 'minor' ? template.hint : undefined,
       frets,
       fingers: [...fingering.fingers],
       startFret: baseFret,

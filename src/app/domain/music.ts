@@ -56,6 +56,77 @@ export const SCALES = {
 export type ScaleKey = keyof typeof SCALES;
 export type ScaleDefinition = (typeof SCALES)[ScaleKey];
 
+export const CHORDS = {
+  major: {
+    name: 'Major',
+    intervals: [0, 4, 7],
+    degrees: [0, 2, 4],
+    labels: ['1', '3', '5'],
+    roles: ['Root', 'Third', 'Fifth'],
+    description: 'A bright triad built from the root, major third, and fifth.',
+  },
+  minor: {
+    name: 'Minor',
+    intervals: [0, 3, 7],
+    degrees: [0, 2, 4],
+    labels: ['1', '♭3', '5'],
+    roles: ['Root', 'Third', 'Fifth'],
+    description: 'A minor third gives this triad a darker sound.',
+  },
+  maj7: {
+    name: 'Major 7 (maj7)',
+    intervals: [0, 4, 7, 11],
+    degrees: [0, 2, 4, 6],
+    labels: ['1', '3', '5', '7'],
+    roles: ['Root', 'Third', 'Fifth', 'Seventh'],
+    description: 'A major triad with a major seventh. A soft, colorful sound for jazz and pop.',
+  },
+  minor7: {
+    name: 'Minor 7 (m7)',
+    intervals: [0, 3, 7, 10],
+    degrees: [0, 2, 4, 6],
+    labels: ['1', '♭3', '5', '♭7'],
+    roles: ['Root', 'Third', 'Fifth', 'Seventh'],
+    description: 'A minor triad with a minor seventh. A warm sound for soul, jazz, and pop.',
+  },
+  dominant7: {
+    name: 'Dominant 7 (7)',
+    intervals: [0, 4, 7, 10],
+    degrees: [0, 2, 4, 6],
+    labels: ['1', '3', '5', '♭7'],
+    roles: ['Root', 'Third', 'Fifth', 'Seventh'],
+    description:
+      'A major triad with a minor seventh. Explore the tension heard in blues and chord resolutions.',
+  },
+  sus2: {
+    name: 'Suspended 2 (sus2)',
+    intervals: [0, 2, 7],
+    degrees: [0, 1, 4],
+    labels: ['1', '2', '5'],
+    roles: ['Root', 'Second', 'Fifth'],
+    description:
+      'Replace the third with a second for an open sound that is neither major nor minor.',
+  },
+  sus4: {
+    name: 'Suspended 4 (sus4)',
+    intervals: [0, 5, 7],
+    degrees: [0, 3, 4],
+    labels: ['1', '4', '5'],
+    roles: ['Root', 'Fourth', 'Fifth'],
+    description:
+      'Replace the third with a fourth. Try moving from sus4 back to major to hear it resolve.',
+  },
+} as const;
+export type ChordKey = keyof typeof CHORDS;
+export const CHORD_OPTIONS = Object.entries(CHORDS).map(([key, chord]) => ({
+  key: key as ChordKey,
+  name: chord.name,
+}));
+
+export function getChordNotes(root: string, key: ChordKey): Note[] {
+  return spellNotes(root, CHORDS[key]);
+}
+
 export interface Note {
   name: string;
   pitch: number;
@@ -82,14 +153,22 @@ export function pitchClass(name: string): number {
 }
 
 export function getNotes(root: string, key: ScaleKey, chord = false): Note[] {
-  const scale = SCALES[key];
+  if (chord) return getChordNotes(root, isMinorScale(key) ? 'minor' : 'major');
+  return spellNotes(root, SCALES[key]);
+}
+
+function spellNotes(
+  root: string,
+  pattern: {
+    readonly intervals: readonly number[];
+    readonly degrees: readonly number[];
+    readonly labels: readonly string[];
+  },
+): Note[] {
+  const { intervals, degrees, labels } = pattern;
   const letters = Object.keys(NATURAL);
   const rootLetterIndex = letters.indexOf(root[0]);
   const rootPitch = pitchClass(root);
-  const minor = isMinorScale(key);
-  const intervals = chord ? [0, minor ? 3 : 4, 7] : scale.intervals;
-  const degrees = chord ? [0, 2, 4] : scale.degrees;
-  const labels = chord ? ['1', minor ? '♭3' : '3', '5'] : scale.labels;
 
   return intervals.map((interval, index) => {
     const pitch = (rootPitch + interval) % 12;

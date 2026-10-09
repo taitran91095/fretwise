@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getChordShapes } from './chord-shapes';
 import { getFingerPlacements, contactX, stringY, stringNamesAtFret } from './hand-pose';
-import { ROOTS } from './music';
+import { ROOTS, CHORD_OPTIONS } from './music';
 
 describe('Hand pose', () => {
   it('places the C major fingers on B1, D2, and A3, leaving the pinky unused', () => {
@@ -38,8 +38,8 @@ describe('Hand pose', () => {
 
   it('aligns every active fingertip with a real chord contact across all roots and families', () => {
     for (const root of ROOTS)
-      for (const minor of [false, true]) {
-        for (const shape of getChordShapes(root, minor)) {
+      for (const { key } of CHORD_OPTIONS) {
+        for (const shape of getChordShapes(root, key)) {
           for (const finger of getFingerPlacements(shape)) {
             if (!finger.active) continue;
             const string = shape.fingers.findIndex(

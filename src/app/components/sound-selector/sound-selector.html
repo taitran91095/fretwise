@@ -35,12 +35,18 @@
     <span>Give it a little character</span>
   </label>
   <div class="select-wrap">
-    <select id="scale" [value]="scaleKey()" (change)="onScaleChange($event)">
-      @for (option of scaleOptions; track option.key) {
-        @if (mode() === 'scale' || option.key === 'major' || option.key === 'minor') {
-          <option [value]="option.key">
-            {{ mode() === 'chord' && option.key === 'minor' ? 'Minor' : option.name }}
-          </option>
+    <select
+      id="scale"
+      [value]="mode() === 'chord' ? chordKey() : scaleKey()"
+      (change)="onScaleChange($event)"
+    >
+      @if (mode() === 'chord') {
+        @for (option of chordOptions; track option.key) {
+          <option [value]="option.key">{{ option.name }}</option>
+        }
+      } @else {
+        @for (option of scaleOptions; track option.key) {
+          <option [value]="option.key">{{ option.name }}</option>
         }
       }
     </select>
@@ -48,13 +54,9 @@
   <div class="sound-description">
     <span class="sparkle">✧</span>
     <div>
-      <h3>{{ mode() === 'scale' ? scale().name + ' feeling' : 'Three notes. One chord.' }}</h3>
+      <h3>{{ mode() === 'scale' ? scale().name + ' feeling' : 'Find your chord color.' }}</h3>
       <p>
-        {{
-          mode() === 'scale'
-            ? scale().mood
-            : 'A triad brings together the root, third, and fifth. These notes give your chord its sound.'
-        }}
+        {{ mode() === 'scale' ? scale().mood : chord().description }}
       </p>
     </div>
   </div>

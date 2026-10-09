@@ -1,0 +1,45 @@
+<p class="tool-description">Find your rhythm. The first beat has a higher click.</p>
+<div class="tempo-control">
+  <button aria-label="Decrease tempo" (click)="engine.setBpm(engine.bpm() - 1)">−</button>
+  <label>
+    <input
+      type="number"
+      min="30"
+      max="240"
+      [value]="engine.bpm()"
+      (change)="changeTempo($event)"
+      aria-label="Tempo in beats per minute"
+    />
+    <span>BPM</span>
+  </label>
+  <button aria-label="Increase tempo" (click)="engine.setBpm(engine.bpm() + 1)">+</button>
+</div>
+<input
+  class="tempo-slider"
+  type="range"
+  min="30"
+  max="240"
+  [value]="engine.bpm()"
+  (input)="changeTempo($event)"
+  aria-label="Tempo slider"
+/>
+<div class="beat-indicators" aria-label="Beat indicators" [attr.data-current-beat]="engine.beat()">
+  @for (beat of beats(); track beat) {
+    <span [class.current]="engine.beat() === beat" [class.downbeat]="beat === 1">{{ beat }}</span>
+  }
+</div>
+<div class="rhythm-controls">
+  <label for="beats-per-bar">Beats per bar</label>
+  <select id="beats-per-bar" [value]="engine.beatsPerBar()" (change)="changeBeats($event)">
+    @for (beats of [1, 2, 3, 4, 5, 6, 7, 8]; track beats) {
+      <option [value]="beats" [selected]="beats === engine.beatsPerBar()">{{ beats }}</option>
+    }
+  </select>
+  <button (click)="tapTempo()">Tap tempo</button>
+</div>
+<button class="start-button" (click)="toggle()">
+  {{ engine.playing() ? 'Stop metronome' : 'Start metronome' }}
+</button>
+@if (engine.error()) {
+  <p class="tool-error" role="alert">{{ engine.error() }}</p>
+}

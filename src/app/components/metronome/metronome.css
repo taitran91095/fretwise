@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+.tool-description {
+  font-size: 12px;
+  color: #687a66;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.tempo-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+.tempo-control button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #dbe3d2;
+  border-radius: 50%;
+  background: #f5f8ef;
+  font-size: 23px;
+}
+.tempo-control label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tempo-control input {
+  width: 105px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font:
+    650 44px Manrope,
+    sans-serif;
+  color: #284d3d;
+  appearance: textfield;
+}
+.tempo-control input::-webkit-inner-spin-button {
+  appearance: none;
+}
+.tempo-control label span {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #687a66;
+}
+.tempo-slider {
+  width: 100%;
+  margin: 20px 0;
+  accent-color: #365d45;
+}
+.beat-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+.beat-indicators span {
+  flex: 1 1 0;
+  max-width: 27px;
+  min-width: 0;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f0f4e9;
+  border: 1px solid #dbe3d2;
+  font-size: 11px;
+}
+.beat-indicators .current {
+  background: #365d45;
+  color: white;
+  border-color: #365d45;
+}
+.beat-indicators .downbeat {
+  border-width: 2px;
+}
+.rhythm-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  margin-bottom: 18px;
+}
+.rhythm-controls select,
+.rhythm-controls button {
+  border: 1px solid #dbe3d2;
+  background: white;
+  border-radius: 7px;
+  padding: 8px;
+  color: #365d45;
+}
+.rhythm-controls button {
+  margin-left: auto;
+}
+.start-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9px;
+  background: #284d3d;
+  color: white;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tool-error {
+  font-size: 12px;
+  color: #964c38;
+  line-height: 1.5;
+}

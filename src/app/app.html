@@ -58,9 +58,11 @@
     <app-sound-selector
       [root]="explorer.root()"
       [scaleKey]="explorer.scaleKey()"
+      [chordKey]="explorer.chordKey()"
       [mode]="explorer.mode()"
       (rootChange)="explorer.setRoot($event)"
       (scaleChange)="explorer.setScale($event)"
+      (chordChange)="explorer.setChord($event)"
       (modeChange)="explorer.setMode($event)"
     />
     <app-note-explorer
@@ -68,7 +70,7 @@
       [notes]="explorer.notes()"
       [scale]="explorer.scale()"
       [mode]="explorer.mode()"
-      [minor]="explorer.minor()"
+      [chordKey]="explorer.chordKey()"
       [selectedPitch]="audio.selectedPitch()"
       [playing]="audio.playing()"
       [audioError]="audio.error()"
@@ -116,3 +118,5 @@
     </span>
   </footer>
 </main>
+
+<app-practice-tools />

@@ -1,5 +1,13 @@
 import { Component, computed, input, output } from '@angular/core';
-import { ROOTS, SCALE_OPTIONS, SCALES, ScaleKey } from '../../domain/music';
+import {
+  ROOTS,
+  SCALE_OPTIONS,
+  SCALES,
+  ScaleKey,
+  CHORD_OPTIONS,
+  CHORDS,
+  ChordKey,
+} from '../../domain/music';
 import { ExploreMode } from '../../domain/explorer';
 
 @Component({
@@ -10,6 +18,10 @@ import { ExploreMode } from '../../domain/explorer';
 export class SoundSelector {
   readonly root = input.required<string>();
   readonly scaleKey = input.required<ScaleKey>();
+  readonly chordKey = input<ChordKey>('major');
+  readonly chord = computed(() => CHORDS[this.chordKey()]);
+  readonly chordOptions = CHORD_OPTIONS;
+  readonly chordChange = output<ChordKey>();
   readonly mode = input.required<ExploreMode>();
   readonly rootChange = output<string>();
   readonly scaleChange = output<ScaleKey>();
@@ -23,6 +35,8 @@ export class SoundSelector {
   }
 
   onScaleChange(event: Event): void {
-    this.scaleChange.emit((event.target as HTMLSelectElement).value as ScaleKey);
+    const value = (event.target as HTMLSelectElement).value;
+    if (this.mode() === 'chord') this.chordChange.emit(value as ChordKey);
+    else this.scaleChange.emit(value as ScaleKey);
   }
 }

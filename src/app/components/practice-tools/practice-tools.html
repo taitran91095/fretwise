@@ -1,0 +1,62 @@
+<div class="floating-tools">
+  @if (activeTool(); as tool) {
+    <section class="tool-panel" aria-labelledby="practice-tool-title">
+      <header>
+        <div>
+          <span class="overline">YOUR PRACTICE COMPANION</span>
+          <h2 id="practice-tool-title">{{ tool === 'metronome' ? 'Metronome' : 'Tuner' }}</h2>
+        </div>
+        <button class="close-button" aria-label="Close practice tool" (click)="closeTool()">
+          ×
+        </button>
+      </header>
+      @if (tool === 'metronome') {
+        <app-metronome />
+      } @else {
+        <app-tuner />
+      }
+    </section>
+  }
+  <button
+    #launcher
+    class="tools-launcher"
+    aria-label="Practice tools"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-controls]="menuOpen() ? 'practice-tools-menu' : null"
+    (click)="toggleMenu()"
+  >
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      aria-hidden="true"
+    >
+      <path d="M4 7h16M4 17h16M8 4v6M16 14v6" />
+    </svg>
+    <span>Practice tools</span>
+    <span aria-hidden="true">{{ menuOpen() ? '−' : '+' }}</span>
+  </button>
+  @if (menuOpen()) {
+    <nav class="tools-menu" id="practice-tools-menu" aria-label="Practice tools">
+      <button (click)="selectTool('metronome')">
+        <span class="menu-icon" aria-hidden="true">♩</span>
+        <span>
+          <strong>Metronome</strong>
+          <small>Keep a steady beat</small>
+        </span>
+        <span aria-hidden="true">↗</span>
+      </button>
+      <button (click)="selectTool('tuner')">
+        <span class="menu-icon" aria-hidden="true">≋</span>
+        <span>
+          <strong>Tuner</strong>
+          <small>Find your string’s pitch</small>
+        </span>
+        <span aria-hidden="true">↗</span>
+      </button>
+    </nav>
+  }
+</div>

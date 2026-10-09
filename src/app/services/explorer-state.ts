@@ -1,7 +1,15 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { getChordShapes } from '../domain/chord-shapes';
 import { ExploreMode, PlayableNote } from '../domain/explorer';
-import { getNotes, isMinorScale, SCALES, ScaleKey } from '../domain/music';
+import {
+  getNotes,
+  getChordNotes,
+  CHORDS,
+  ChordKey,
+  isMinorScale,
+  SCALES,
+  ScaleKey,
+} from '../domain/music';
 import { STANDARD_TUNING } from '../domain/instrument';
 import { AudioPlayback } from './audio-playback';
 
@@ -10,19 +18,21 @@ export class ExplorerState {
   private readonly audio = inject(AudioPlayback);
   readonly root = signal('C');
   readonly scaleKey = signal<ScaleKey>('major');
+  readonly chordKey = signal<ChordKey>('major');
+  readonly chord = computed(() => CHORDS[this.chordKey()]);
   readonly mode = signal<ExploreMode>('scale');
   readonly shapeIndex = signal<number | null>(0);
   readonly scale = computed(() => SCALES[this.scaleKey()]);
   readonly minor = computed(() => isMinorScale(this.scaleKey()));
-  readonly notes = computed(() => getNotes(this.root(), this.scaleKey(), this.mode() === 'chord'));
-  readonly shapes = computed(() => getChordShapes(this.root(), this.minor()));
+  readonly notes = computed(() =>
+    this.mode() === 'chord'
+      ? getChordNotes(this.root(), this.chordKey())
+      : getNotes(this.root(), this.scaleKey()),
+  );
+  readonly shapes = computed(() => getChordShapes(this.root(), this.chordKey()));
   readonly name = computed(() => {
     const quality =
-      this.mode() === 'chord'
-        ? this.minor()
-          ? 'minor'
-          : 'major'
-        : this.scale().name.toLowerCase();
+      this.mode() === 'chord' ? this.chord().name.toLowerCase() : this.scale().name.toLowerCase();
     return `${this.root()} ${quality}`;
   });
   readonly activeShape = computed(() => {
@@ -51,7 +61,12 @@ export class ExplorerState {
 
   setScale(scale: ScaleKey): void {
     this.scaleKey.set(scale);
-    this.normalizeChordFamily();
+    if (this.mode() === 'chord') this.normalizeChordFamily();
+    this.resetSelection();
+  }
+
+  setChord(chord: ChordKey): void {
+    this.chordKey.set(chord);
     this.resetSelection();
   }
 
@@ -67,7 +82,11 @@ export class ExplorerState {
   }
 
   private normalizeChordFamily(): void {
-    if (this.mode() === 'chord') this.scaleKey.set(this.minor() ? 'minor' : 'major');
+    if (this.mode() === 'chord') {
+      const quality = this.minor() ? 'minor' : 'major';
+      this.scaleKey.set(quality);
+      this.chordKey.set(quality);
+    }
   }
 
   private resetSelection(): void {

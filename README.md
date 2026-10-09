@@ -7,14 +7,16 @@ An Angular guitar practice app for exploring scales, chords, fingerings, and han
 ## Features
 
 - Major, natural minor, major pentatonic, and minor pentatonic scales.
-- Major chords in all five CAGED families (C, A, G, E, D), plus a smaller G-shaped grip. Minor chords offer E, A, and D grips. Open and movable positions include strummed playback.
-- A left hand gripping the neck with fingers at the selected string/fret positions. Hand proportions are simplified; hide the hand to inspect the contact points.
+- Major, minor, major 7 (maj7), minor 7 (m7), dominant 7 (7), sus2, and sus4 chord types with correctly spelled chord tones and formulas.
+- Major chords in all five CAGED families (C, A, G, E, D), plus a smaller G-shaped grip. Minor chords offer E, A, and D grips; seventh and suspended chords include practical open and movable grips. Open and movable positions include strummed playback.
+- A left hand gripping the neck with fingers at the selected string/fret positions. Toggle Player’s view for high e at the top and the hand above the neck. Hand proportions are simplified; hide the hand to inspect the contact points.
 - A 15-fret interactive fretboard, with root notes, finger numbers, and a degree toggle.
+- Floating metronome with adjustable tempo, tap tempo, and accented bars; microphone tuner with automatic note detection and standard-string targets. Tuner audio stays on your device and the microphone stops when the tool closes.
 - Responsive layouts and keyboard-accessible controls.
 
 C major **scale** is C D E F G A B. C major **chord** is C E G.
 
-Audio uses synthesized browser Web Audio tones. Fonts load from Google Fonts with local fallbacks. No backend or account is required.
+Audio uses synthesized browser Web Audio tones. Fonts load from Google Fonts with local fallbacks. No backend or account is required. The tuner needs microphone permission and HTTPS or localhost.
 
 CAGED learning reference: [JustinGuitar chord shapes](https://www.justinguitar.com/modules/chord-shape-explorer).
 
@@ -71,15 +73,21 @@ src/app/
     chord-diagram/                Reusable SVG chord diagram
     fretboard/                    Interactive notes and selected finger positions
     hand-position/                Left-hand neck grip and finger instructions
+    practice-tools/               Floating menu and tool panels
+    metronome/                    Tempo, rhythm, and playback controls
+    tuner/                        Pitch display and microphone controls
   domain/
     music.ts                      Note spelling, scale intervals, and chord tones
     chord-shapes.ts                Open shapes, movable barre shapes, descriptions
     instrument.ts                 Standard tuning and fretboard constants
     hand-pose.ts                  Finger contact points, paths, and instructions
     explorer.ts                   Shared interaction types
+    pitch-detection.ts            Pitch estimation and tuning offsets
   services/
     explorer-state.ts             Selection state and derived notes/shapes
     audio-playback.ts             Tone synthesis, playback, cancellation, cleanup
+    metronome-engine.ts            Audio-clock click scheduling
+    tuner-engine.ts                Microphone capture and resource cleanup
 ```
 
 Components receive typed signal inputs and emit user actions. They do not own shared selection state or access Web Audio directly. `ExplorerState` derives the selected notes, chord shapes, and playback sequences; `AudioPlayback` owns the audio context and cancels stale playback. Music and hand-pose calculations are pure functions, independent of Angular.

@@ -1,0 +1,56 @@
+<p class="tool-description">Pluck one string and let it ring. Keep the room quiet.</p>
+<label class="string-select">
+  Tune to
+  <select
+    [value]="engine.targetMidi() ?? 'auto'"
+    (change)="selectString($event)"
+    aria-label="Tuner target string"
+  >
+    <option value="auto" [selected]="engine.targetMidi() === undefined">Auto · nearest note</option>
+    @for (string of strings; track string.midi) {
+      <option [value]="string.midi" [selected]="engine.targetMidi() === string.midi">
+        {{ string.label }}{{ string.midi < 48 ? '2' : string.midi < 60 ? '3' : '4' }}
+      </option>
+    }
+  </select>
+</label>
+<div class="tuner-note" [class.in-tune]="pitchStatus() === 'In tune'">
+  <strong>{{ engine.reading()?.note ?? '—' }}</strong>
+  <span>{{ engine.reading()?.octave ?? '' }}</span>
+</div>
+<div class="tuning-meter" aria-label="Pitch deviation" [attr.data-cents]="engine.reading()?.cents">
+  <span class="center-zone"></span>
+  @if (engine.reading()) {
+    <span class="needle" [style.left.%]="needlePosition()"></span>
+  }
+  <span class="center-mark"></span>
+</div>
+<div class="meter-labels">
+  <span>♭ Flat</span>
+  <span>In tune</span>
+  <span>Sharp ♯</span>
+</div>
+<p class="pitch-status" role="status">{{ pitchStatus() }}</p>
+<p class="frequency">
+  @if (engine.reading(); as reading) {
+    {{ reading.frequency | number: '1.1-1' }} Hz · {{ reading.cents > 0 ? '+' : ''
+    }}{{ reading.cents | number: '1.0-0' }} cents
+  } @else {
+    Reference: A4 = 440 Hz
+  }
+</p>
+<button class="start-button" (click)="toggle()">
+  {{
+    engine.requesting()
+      ? 'Cancel microphone request'
+      : engine.listening()
+        ? 'Stop tuning'
+        : 'Start tuning'
+  }}
+</button>
+<p class="privacy-note">
+  Microphone audio is processed on your device. Nothing is recorded or uploaded.
+</p>
+@if (engine.error()) {
+  <p class="tool-error" role="alert">{{ engine.error() }}</p>
+}
