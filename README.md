@@ -12,6 +12,7 @@ An Angular guitar practice app for exploring scales, chords, fingerings, and han
 - A left hand gripping the neck with fingers at the selected string/fret positions. Toggle Player’s view for high e at the top and the hand above the neck. Hand proportions are simplified; hide the hand to inspect the contact points.
 - A 15-fret interactive fretboard, with root notes, finger numbers, and a degree toggle.
 - Floating metronome with adjustable tempo, tap tempo, and accented bars; microphone tuner with automatic note detection and standard-string targets. Tuner audio stays on your device and the microphone stops when the tool closes.
+- Installable PWA with offline app caching, home-screen icons, and a prompt when an updated version is ready.
 - Responsive layouts and keyboard-accessible controls.
 
 C major **scale** is C D E F G A B. C major **chord** is C E G.
@@ -61,6 +62,14 @@ Deployment requires Git authentication and push access to the repository configu
 
 In the repository's GitHub Pages settings, use the `gh-pages` branch and `/ (root)` folder. For a fork, point `origin` to your own repository and update the deployment target's `baseHref` to `/<your-repository-name>/`, including the trailing slash. Local development continues to use `/`.
 
+## Install and use offline
+
+Visit the [live app](https://taitran91095.github.io/fretwise/) online once so the service worker can cache it. In supported browsers, use **Install Fretwise** when it appears, or the browser's install menu. On iPhone or iPad, open the app in Safari and choose **Share → Add to Home Screen**.
+
+Scales, chords, hand guides, synthesized playback, the metronome, and the tuner can work offline after caching. The tuner still needs microphone permission. External Google Fonts use local font fallbacks when unavailable. When an update is ready, choose **Reload to update** after finishing your practice.
+
+Service workers run in production builds over HTTPS or localhost; `npm start` keeps them disabled for development. `npm run deploy` builds the PWA with the `/fretwise/` GitHub Pages path. The manifest uses relative start, scope, and icon URLs so it also works at the local root.
+
 ## Code organization
 
 ```text
@@ -76,6 +85,7 @@ src/app/
     practice-tools/               Floating menu and tool panels
     metronome/                    Tempo, rhythm, and playback controls
     tuner/                        Pitch display and microphone controls
+    pwa-status/                   Browser install and update prompts
   domain/
     music.ts                      Note spelling, scale intervals, and chord tones
     chord-shapes.ts                Open shapes, movable barre shapes, descriptions

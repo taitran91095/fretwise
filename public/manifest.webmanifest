@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Fretwise — Guitar Practice",
+  "short_name": "Fretwise",
+  "description": "Explore guitar scales, chords, finger positions, a metronome, and a tuner.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f8f4",
+  "theme_color": "#284d3d",
+  "categories": ["education", "music"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

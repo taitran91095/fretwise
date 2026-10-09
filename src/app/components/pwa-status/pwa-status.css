@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+.pwa-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 20px;
+  background: #eef3e3;
+  border-bottom: 1px solid #dbe3d2;
+  font-size: 12px;
+  color: #365d45;
+}
+.pwa-status button {
+  border: 1px solid #284d3d;
+  background: #284d3d;
+  color: white;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.offline-note {
+  color: #687a66;
+}

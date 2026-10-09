@@ -1,0 +1,17 @@
+@if (installPrompt() || updateReady() || !online() || installError()) {
+  <aside class="pwa-status" aria-label="App installation and updates">
+    @if (updateReady()) {
+      <span role="status">A new version of Fretwise is ready.</span>
+      <button (click)="reload()">Reload to update</button>
+    } @else if (installPrompt()) {
+      <span>Keep your practice room close.</span>
+      <button (click)="install()">Install Fretwise</button>
+    }
+    @if (!online()) {
+      <span class="offline-note" role="status">Offline · keep practicing</span>
+    }
+    @if (installError()) {
+      <span role="status">{{ installError() }}</span>
+    }
+  </aside>
+}
