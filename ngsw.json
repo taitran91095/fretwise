@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1791539100392,
+  "timestamp": 1791540272352,
   "index": "/fretwise/index.html",
   "assetGroups": [
     {
@@ -20,7 +20,7 @@
         "/fretwise/icons/icon-512.png",
         "/fretwise/icons/icon-maskable-512.png",
         "/fretwise/index.html",
-        "/fretwise/main-SZOXEM3M.js",
+        "/fretwise/main-RK7KUXOM.js",
         "/fretwise/manifest.webmanifest",
         "/fretwise/styles-B2QZSADF.css"
       ],
@@ -37,8 +37,8 @@
     "/fretwise/icons/icon-192.png": "808d3dfc660100765dc31b0c3561e45bc24eba08",
     "/fretwise/icons/icon-512.png": "f43fe508b2ce241aa72d15472a597f0cab4ec101",
     "/fretwise/icons/icon-maskable-512.png": "e2c562f4d3b3ea07f3adfb0d5b29466a27906b98",
-    "/fretwise/index.html": "3c220c102e519faf2f9051136fd2dc5d930f1ac0",
-    "/fretwise/main-SZOXEM3M.js": "bf79d2f9a181aa9445c5afece4bfebbfac683d5c",
+    "/fretwise/index.html": "789656183c1f7c951a84da145dcb3e26b1439e3e",
+    "/fretwise/main-RK7KUXOM.js": "20f6bc3f1d8da7fc540303e0b79771edbb657c1d",
     "/fretwise/manifest.webmanifest": "5c8485d685e092cc2e37f6c274c28ba5ed2809c2",
     "/fretwise/styles-B2QZSADF.css": "fb367a74864daf14342c1f2c7b40279e57998461"
   },
