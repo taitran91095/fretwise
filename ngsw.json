@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1791540272352,
+  "timestamp": 1792146465789,
   "index": "/fretwise/index.html",
   "assetGroups": [
     {
@@ -11,6 +11,10 @@
         "ignoreVary": true
       },
       "urls": [
+        "/fretwise/chunk-3LKKW7ZH.js",
+        "/fretwise/chunk-DYRLIHAS.js",
+        "/fretwise/chunk-LGCF4UOD.js",
+        "/fretwise/chunk-VF72AVQK.js",
         "/fretwise/favicon.ico",
         "/fretwise/favicon.svg",
         "/fretwise/icons/apple-touch-icon.png",
@@ -20,7 +24,7 @@
         "/fretwise/icons/icon-512.png",
         "/fretwise/icons/icon-maskable-512.png",
         "/fretwise/index.html",
-        "/fretwise/main-RK7KUXOM.js",
+        "/fretwise/main-H4PHIDBN.js",
         "/fretwise/manifest.webmanifest",
         "/fretwise/styles-B2QZSADF.css"
       ],
@@ -29,6 +33,10 @@
   ],
   "dataGroups": [],
   "hashTable": {
+    "/fretwise/chunk-3LKKW7ZH.js": "4cee05c4107339c35bedc76d018c611a0138b458",
+    "/fretwise/chunk-DYRLIHAS.js": "02ee63a2cebf69b27246202bbe255844fe8958ce",
+    "/fretwise/chunk-LGCF4UOD.js": "969e14d91fbd5c97fd04df8834e1e9cd980c7a94",
+    "/fretwise/chunk-VF72AVQK.js": "674de559478376ce41db3975504580ea135dc444",
     "/fretwise/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
     "/fretwise/favicon.svg": "243390794e1dfaae7d2ffa318f15a8860ecbab2f",
     "/fretwise/icons/apple-touch-icon.png": "b8c6fb157d5d790cc4c04fdfdcb18d4624fecd13",
@@ -37,8 +45,8 @@
     "/fretwise/icons/icon-192.png": "808d3dfc660100765dc31b0c3561e45bc24eba08",
     "/fretwise/icons/icon-512.png": "f43fe508b2ce241aa72d15472a597f0cab4ec101",
     "/fretwise/icons/icon-maskable-512.png": "e2c562f4d3b3ea07f3adfb0d5b29466a27906b98",
-    "/fretwise/index.html": "789656183c1f7c951a84da145dcb3e26b1439e3e",
-    "/fretwise/main-RK7KUXOM.js": "20f6bc3f1d8da7fc540303e0b79771edbb657c1d",
+    "/fretwise/index.html": "1ed3229f5f601ab11044b1494e76fa4110216e10",
+    "/fretwise/main-H4PHIDBN.js": "4c516bd3131739373f43623e3fe678e524843868",
     "/fretwise/manifest.webmanifest": "5c8485d685e092cc2e37f6c274c28ba5ed2809c2",
     "/fretwise/styles-B2QZSADF.css": "fb367a74864daf14342c1f2c7b40279e57998461"
   },
