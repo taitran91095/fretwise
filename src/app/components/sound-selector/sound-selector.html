@@ -3,22 +3,6 @@
     <span class="section-number">01</span>
     <h2>Choose your sound</h2>
   </div>
-  <div class="segmented" aria-label="Explore type">
-    <button
-      [class.active]="mode() === 'scale'"
-      [attr.aria-pressed]="mode() === 'scale'"
-      (click)="modeChange.emit('scale')"
-    >
-      Scales
-    </button>
-    <button
-      [class.active]="mode() === 'chord'"
-      [attr.aria-pressed]="mode() === 'chord'"
-      (click)="modeChange.emit('chord')"
-    >
-      Chords
-    </button>
-  </div>
   <label for="root">
     Root note
     <span>The note you call home</span>
@@ -26,7 +10,7 @@
   <div class="select-wrap">
     <select id="root" [value]="root()" (change)="onRootChange($event)">
       @for (note of roots; track note) {
-        <option [value]="note">{{ note }}</option>
+        <option [value]="note" [selected]="root() === note">{{ note }}</option>
       }
     </select>
   </div>
@@ -42,11 +26,15 @@
     >
       @if (mode() === 'chord') {
         @for (option of chordOptions; track option.key) {
-          <option [value]="option.key">{{ option.name }}</option>
+          <option [value]="option.key" [selected]="chordKey() === option.key">
+            {{ option.name }}
+          </option>
         }
       } @else {
         @for (option of scaleOptions; track option.key) {
-          <option [value]="option.key">{{ option.name }}</option>
+          <option [value]="option.key" [selected]="scaleKey() === option.key">
+            {{ option.name }}
+          </option>
         }
       }
     </select>

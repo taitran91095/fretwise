@@ -25,7 +25,6 @@ export class SoundSelector {
   readonly mode = input.required<ExploreMode>();
   readonly rootChange = output<string>();
   readonly scaleChange = output<ScaleKey>();
-  readonly modeChange = output<ExploreMode>();
   readonly roots = ROOTS;
   readonly scaleOptions = SCALE_OPTIONS;
   readonly scale = computed(() => SCALES[this.scaleKey()]);

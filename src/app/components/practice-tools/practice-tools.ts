@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { Metronome } from '../metronome/metronome';
 import { Tuner } from '../tuner/tuner';
 import { MetronomeEngine } from '../../services/metronome-engine';
@@ -14,6 +14,8 @@ type PracticeTool = 'metronome' | 'tuner';
   styleUrl: './practice-tools.css',
 })
 export class PracticeTools {
+  // This owner outlives the popup; hiding controls must not stop its audio engine.
+  readonly metronome = inject(MetronomeEngine);
   readonly menuOpen = signal(false);
   readonly activeTool = signal<PracticeTool | null>(null);
   private readonly launcher = viewChild<ElementRef<HTMLButtonElement>>('launcher');
@@ -23,6 +25,8 @@ export class PracticeTools {
   }
 
   selectTool(tool: PracticeTool): void {
+    // Keep metronome clicks out of the tuner's microphone input.
+    if (tool === 'tuner') this.metronome.stop();
     this.activeTool.set(tool);
     this.menuOpen.set(false);
   }

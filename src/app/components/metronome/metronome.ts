@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MetronomeEngine } from '../../services/metronome-engine';
 
 @Component({
@@ -6,7 +6,7 @@ import { MetronomeEngine } from '../../services/metronome-engine';
   templateUrl: './metronome.html',
   styleUrl: './metronome.css',
 })
-export class Metronome implements OnDestroy {
+export class Metronome {
   readonly engine = inject(MetronomeEngine);
   readonly beats = computed(() =>
     Array.from({ length: this.engine.beatsPerBar() }, (_, i) => i + 1),
@@ -39,9 +39,5 @@ export class Metronome implements OnDestroy {
   toggle(): void {
     if (this.engine.playing()) this.engine.stop();
     else void this.engine.start();
-  }
-
-  ngOnDestroy(): void {
-    this.engine.stop();
   }
 }

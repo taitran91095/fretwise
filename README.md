@@ -1,10 +1,14 @@
 # Fretwise
 
-An Angular guitar practice app for exploring scales, chords, fingerings, and hand positions on a standard-tuned guitar.
+An Angular guitar practice app for exploring scales, chords, fingerings, hand positions, and rhythm patterns on a standard-tuned guitar.
 
 [Try the live demo](https://taitran91095.github.io/fretwise/)
 
 ## Features
+
+- Four dedicated practice pages: Scales, Chords, Strumming, and Fingerpicking.
+- 51 strumming patterns and 51 fingerpicking patterns across 16 styles, with three or four variants per style. Browse by style or search English pattern names and descriptions.
+- Pop, ballad, Slow Rock, funk, rock, disco, reggae, bolero, rumba, bossa nova, valse, Boston, country/folk, blues/shuffle, cha-cha-cha, and essential exercises. Eighth/sixteenth grids, accents, bass-only strokes, muted taps, and C-major fingerpicking tabs use English labels and practice guidance.
 
 - Major, natural minor, major pentatonic, and minor pentatonic scales.
 - Major, minor, major 7 (maj7), minor 7 (m7), dominant 7 (7), sus2, and sus4 chord types with correctly spelled chord tones and formulas.
@@ -34,7 +38,11 @@ npm ci
 npm start
 ```
 
-Open [localhost:4200](http://localhost:4200).
+Open [localhost:4200](http://localhost:4200). The navigation links open `/#/scales`, `/#/chords`, `/#/strumming`, and `/#/fingerpicking`.
+
+On a rhythm page, choose a pattern to see one counted bar. Start with the floating metronome at 60 BPM: use 4 beats per bar for 4/4 and 12/8, 3 for 3/4, and 2 dotted-quarter pulses for 6/8. The page explains which counts go with each click. Fingerpicking examples use open C major, `x32010` from low E to high e. Numbers in the tab are frets; `p/i/m/a` identify the picking thumb/index/middle/ring fingers.
+
+Vietnamese references include [GuitarShare](https://guitarshare.vn/guitar-blog/tong-hop-15-ieu-em-hat-moi-bai-hat-html/), [Việt Thương](https://vietthuong.edu.vn/cac-dieu-dan-guitar-pho-bien-va-cach-danh.html), Trung Nguyên, and Nhạc Cụ Online. [The rhythm source guide](docs/rhythm-sources.md) lists links and interpretation notes. Patterns are original counted practice arrangements, rather than exact transcriptions of the lessons or specific songs. Some styles have different treatments between teachers; the written meter and grid are explicit for each example.
 
 ## Development commands
 
@@ -51,7 +59,7 @@ Tests use Vitest and Angular TestBed with jsdom. Audio tests substitute a contro
 
 ## GitHub Pages deployment
 
-The deployment target builds for [taitran91095.github.io/fretwise/](https://taitran91095.github.io/fretwise/) with `baseHref: "/fretwise/"` in `angular.json`. This makes JavaScript, CSS, and favicon URLs resolve under the repository path.
+The deployment target builds for [taitran91095.github.io/fretwise/](https://taitran91095.github.io/fretwise/) with `baseHref: "/fretwise/"` in `angular.json`. This makes JavaScript, CSS, and favicon URLs resolve under the repository path. Angular uses hash-based routes (for example, `/fretwise/#/chords`) so direct links and refreshes work without server-side URL rewrites.
 
 ```sh
 npm run deploy -- --dry-run # Build and check deployment without publishing
@@ -66,7 +74,7 @@ In the repository's GitHub Pages settings, use the `gh-pages` branch and `/ (roo
 
 Visit the [live app](https://taitran91095.github.io/fretwise/) online once so the service worker can cache it. In supported browsers, use **Install Fretwise** when it appears, or the browser's install menu. On iPhone or iPad, open the app in Safari and choose **Share → Add to Home Screen**.
 
-Scales, chords, hand guides, synthesized playback, the metronome, and the tuner can work offline after caching. The tuner still needs microphone permission. External Google Fonts use local font fallbacks when unavailable. When an update is ready, choose **Reload to update** after finishing your practice.
+All four practice pages, hand guides, synthesized playback, the metronome, and the tuner can work offline after caching. The tuner still needs microphone permission. External Google Fonts use local font fallbacks when unavailable. When an update is ready, choose **Reload to update** after finishing your practice.
 
 Service workers run in production builds over HTTPS or localhost; `npm start` keeps them disabled for development. `npm run deploy` builds the PWA with the `/fretwise/` GitHub Pages path. The manifest uses relative start, scope, and icon URLs so it also works at the local root.
 
@@ -74,9 +82,13 @@ Service workers run in production builds over HTTPS or localhost; `npm start` ke
 
 ```text
 src/app/
-  app.ts / app.html / app.css      Page layout and component wiring
+  app.ts / app.html / app.css      Shared shell, navigation, and floating tools
+  app.routes.ts                   Lazy-loaded routes and page titles
+  pages/
+    explorer-page/                Scale/chord page wiring with shared explorer components
+    rhythm-page/                  Strumming grids and fingerpicking tabs
   components/
-    sound-selector/               Root, scale family, and scale/chord mode inputs
+    sound-selector/               Root note and scale/chord family inputs
     note-explorer/                Note cards, pattern, and playback controls
     chord-shape-picker/           Grouped chord shapes and selection controls
     chord-diagram/                Reusable SVG chord diagram
@@ -93,6 +105,12 @@ src/app/
     hand-pose.ts                  Finger contact points, paths, and instructions
     explorer.ts                   Shared interaction types
     pitch-detection.ts            Pitch estimation and tuning offsets
+    rhythm-patterns.ts            Catalog exports, counting, and metronome pulses
+    rhythm-types.ts               Typed styles, meter, strokes, and picking events
+    rhythm-styles.ts              Style guidance and Vietnamese references
+    rhythm-builders.ts            Readable string/strum notation parsing
+    strumming-patterns.ts         51 counted strumming exercises
+    fingerpicking-patterns.ts     51 C-major picking exercises
   services/
     explorer-state.ts             Selection state and derived notes/shapes
     audio-playback.ts             Tone synthesis, playback, cancellation, cleanup

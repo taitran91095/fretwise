@@ -1,0 +1,304 @@
+<div class="eyebrow">
+  THE PRACTICE ROOM
+  <span>/</span>
+  {{ isPicking ? '04 / FINGERPICKING' : '03 / STRUMMING' }}
+</div>
+<section class="intro">
+  <h1>
+    {{ isPicking ? 'Let your fingers' : 'Find your' }}
+    <em>{{ isPicking ? 'tell the story.' : 'rhythm.' }}</em>
+  </h1>
+  <p>
+    {{
+      isPicking
+        ? 'Common picking patterns, one string at a time. Start with an easy C major chord.'
+        : 'Common strumming patterns for your next song. Keep your hand moving and let the groove settle in.'
+    }}
+  </p>
+</section>
+<section class="library-filters panel" aria-label="Pattern filters">
+  <div>
+    <label for="rhythm-style">Style</label>
+    <select id="rhythm-style" [value]="styleFilter()" (change)="setStyle($event)">
+      <option value="all" [selected]="styleFilter() === 'all'">
+        All styles · {{ styles.length }}
+      </option>
+      @for (style of styles; track style.id) {
+        <option [value]="style.id" [selected]="styleFilter() === style.id">
+          {{ style.name }}
+        </option>
+      }
+    </select>
+  </div>
+  <div>
+    <label for="pattern-search">Find a pattern</label>
+    <input
+      id="pattern-search"
+      type="search"
+      placeholder="Slow Rock, ballad, funk…"
+      [value]="search()"
+      (input)="setSearch($event)"
+    />
+  </div>
+  <p class="result-count" role="status">{{ filtered().length }} / {{ patterns.length }} patterns</p>
+</section>
+@if (filtered().length > 0) {
+  <div class="rhythm-layout">
+    <aside class="pattern-list panel" aria-labelledby="patterns-title">
+      <div class="section-heading">
+        <span class="section-number">01</span>
+        <h2 id="patterns-title">Choose a variation</h2>
+      </div>
+      <div class="pattern-options">
+        @for (group of groups(); track group.style.id) {
+          <h3 class="style-group-heading">
+            {{ group.style.name }}
+            <small>{{ group.patterns.length }}</small>
+          </h3>
+          @for (pattern of group.patterns; track pattern.id; let index = $index) {
+            <button
+              class="pattern-option"
+              [class.selected]="selected().id === pattern.id"
+              [attr.aria-pressed]="selected().id === pattern.id"
+              (click)="selectedId.set(pattern.id)"
+            >
+              <span class="pattern-number">{{ index + 1 }}</span>
+              <span>
+                <strong>{{ pattern.name }}</strong>
+                <small>
+                  {{ pattern.beats }}/{{ pattern.beatUnit }} ·
+                  {{ pattern.subdivision === 16 ? '16th notes' : '8th notes' }}
+                </small>
+              </span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          }
+        }
+      </div>
+    </aside>
+    <section class="pattern-detail panel" aria-labelledby="pattern-title">
+      <div class="detail-heading">
+        <span class="overline">
+          ONE BAR · {{ selected().beats }}/{{ selected().beatUnit }} TIME
+        </span>
+        <span class="tempo">Try 60 BPM</span>
+      </div>
+      <h2 id="pattern-title">{{ selected().name }}</h2>
+      <p class="style-context">{{ selectedStyle().name }}</p>
+      <p class="description">{{ selected().description }}</p>
+      <p class="style-summary">{{ selectedStyle().summary }}</p>
+      @if (isPicking) {
+        <p class="grip-guide">
+          <strong>Hold C major:</strong>
+          ring finger on A3, middle on D2, index on B1. Leave G and high e open; avoid low E.
+        </p>
+      }
+      <div
+        class="notation-scroll"
+        tabindex="0"
+        role="region"
+        [attr.aria-label]="isPicking ? 'C major fingerpicking tablature' : 'Strumming count grid'"
+      >
+        @if (isPicking) {
+          <table class="tab-notation" [style.min-width.px]="58 + counts().length * 48">
+            <caption>C major · x32010 · high e at the top</caption>
+            <thead>
+              <tr>
+                <th scope="col">String</th>
+                @for (count of counts(); track $index) {
+                  <th scope="col" [class.accent-count]="selected().accents.includes($index)">
+                    {{ count }}
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (string of strings; track $index; let stringIndex = $index) {
+                <tr>
+                  <th scope="row">
+                    {{ string }}
+                    <small>{{ stringIndex + 1 }}</small>
+                  </th>
+                  @for (count of counts(); track $index; let step = $index) {
+                    <td
+                      [class.played]="tabFret(stringIndex, step) !== '–'"
+                      [class.accent-note]="selected().accents.includes(step)"
+                    >
+                      <span [class.fret-number]="tabFret(stringIndex, step) !== '–'">
+                        {{ tabFret(stringIndex, step) }}
+                      </span>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <th scope="row">Finger</th>
+                @for (count of counts(); track $index) {
+                  <td>{{ fingersAt($index) }}</td>
+                }
+              </tr>
+            </tfoot>
+          </table>
+        } @else {
+          <table class="strum-notation" [style.min-width.px]="counts().length * 48">
+            <caption>Count aloud. Read left to right, then repeat.</caption>
+            <thead>
+              <tr>
+                @for (count of counts(); track $index) {
+                  <th scope="col" [class.accent-count]="selected().accents.includes($index)">
+                    {{ count }}
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                @for (stroke of selected().strokes; track $index) {
+                  <td
+                    [class.rest]="stroke === '–'"
+                    [class.accent-stroke]="selected().accents.includes($index)"
+                    [attr.aria-label]="
+                      strokeLabel(stroke) + (selected().accents.includes($index) ? ' · accent' : '')
+                    "
+                  >
+                    <span aria-hidden="true">
+                      {{ strokeSymbol(stroke) }}
+                    </span>
+                    <small>{{ stroke }}</small>
+                  </td>
+                }
+              </tr>
+            </tbody>
+          </table>
+        }
+      </div>
+      @if (counts().length > 8) {
+        <p class="scroll-hint">
+          Scroll the notation sideways to read the full bar on smaller screens.
+        </p>
+      }
+      @if (isPicking) {
+        <div class="legend">
+          <span>
+            <b>p</b>
+            Thumb
+          </span>
+          <span>
+            <b>i</b>
+            Index
+          </span>
+          <span>
+            <b>m</b>
+            Middle
+          </span>
+          <span>
+            <b>a</b>
+            Ring
+          </span>
+        </div>
+        <p class="reading-help">
+          Numbers are frets: 0 means an open string. A dash means no pluck at that step; let earlier
+          notes ring. Notes in the same column are played together. Finger letters refer to your
+          picking hand.
+        </p>
+        <p class="reading-help">
+          × = a quiet muted tap across the strings, shown on the G row as a percussion marker; it is
+          not a fretted note. Green count boxes mark suggested accents.
+        </p>
+        <a class="chord-link" routerLink="/chords">Explore fingerings on the chords page ↗</a>
+      } @else {
+        <div class="legend">
+          <span>
+            <b>↓ D</b>
+            Downstroke
+          </span>
+          <span>
+            <b>↑ U</b>
+            Upstroke
+          </span>
+          <span>
+            <b>· –</b>
+            No new attack
+          </span>
+          <span>
+            <b>B</b>
+            Bass-only stroke
+          </span>
+          <span>
+            <b>× X</b>
+            Muted stroke
+          </span>
+        </div>
+        <p class="reading-help">
+          Each column is one {{ selected().subdivision === 16 ? 'sixteenth' : 'eighth' }} note.
+          Follow the printed down/up arrows; B brushes only the low playable strings. X is a
+          percussive muted stroke. A gap means no new attack; green count boxes mark suggested
+          accents.
+        </p>
+      }
+      <p class="meter-help">
+        @if (selected().beatUnit === 8) {
+          @if (selected().beats === 6) {
+            Count 1-2-3 / 4-5-6. Feel two dotted-quarter pulses; the metronome clicks on counts 1
+            and 4.
+          } @else {
+            Count 1-la-li / 2-la-li / 3-la-li / 4-la-li. Each metronome click starts a group of
+            three eighth notes.
+          }
+        } @else if (selected().subdivision === 16) {
+          Count 1-e-&amp;-a, 2-e-&amp;-a, 3-e-&amp;-a, 4-e-&amp;-a. Keep the smaller subdivisions
+          even.
+        } @else {
+          Count each beat and its “and” evenly. The metronome clicks on the numbered quarter-note
+          beats.
+        }
+      </p>
+      <div class="pattern-tip">
+        <span aria-hidden="true">✧</span>
+        <p>{{ selected().tip }}</p>
+      </div>
+    </section>
+  </div>
+} @else {
+  <section class="empty-results panel">
+    <h2>No matching patterns</h2>
+    <p>Try another style or a shorter search.</p>
+    <button class="play-button" (click)="clearFilters()">Show all patterns</button>
+  </section>
+}
+@if (filtered().length > 0) {
+  <section class="practice-plan panel" aria-labelledby="practice-title">
+    <div>
+      <span class="overline">A LITTLE EVERY DAY</span>
+      <h2 id="practice-title">Make it feel natural.</h2>
+    </div>
+    <ol>
+      <li>
+        <strong>Start slowly.</strong>
+        Use the floating tools button to open the metronome. Set 60 BPM and
+        {{ pulseCount() }} beats per bar.
+        @if (selected().beatUnit === 8) {
+          Each click is one dotted-quarter pulse.
+        }
+      </li>
+      <li>
+        <strong>Stay on one chord.</strong>
+        {{
+          isPicking
+            ? 'Hold C major; avoid the low E string in these examples.'
+            : 'Hold an easy chord, such as E minor. Loop the pattern for a minute.'
+        }}
+      </li>
+      <li>
+        <strong>Add a change.</strong>
+        {{
+          isPicking
+            ? 'Try A minor with the same strings. For other chords, choose bass strings that belong to the chord.'
+            : 'Change chords only at the start of each bar. Keep the picking hand moving.'
+        }}
+      </li>
+    </ol>
+  </section>
+}

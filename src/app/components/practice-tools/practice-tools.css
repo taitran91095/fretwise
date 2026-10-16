@@ -123,3 +123,12 @@
     max-height: calc(100dvh - 170px);
   }
 }
+
+.running-tempo {
+  padding: 3px 7px;
+  border-radius: 12px;
+  background: #ffffff20;
+  color: #edf3dc;
+  font-size: 10px;
+  white-space: nowrap;
+}

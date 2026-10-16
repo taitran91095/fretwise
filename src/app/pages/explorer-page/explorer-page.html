@@ -1,0 +1,79 @@
+<div class="eyebrow">
+  <span class="tiny-icon">♮</span>
+  THE PRACTICE ROOM
+  <span class="eyebrow-line"></span>
+  {{ explorer.mode() === 'scale' ? '01 / SCALES' : '02 / CHORDS' }}
+</div>
+<section class="intro">
+  <div>
+    <h1>
+      {{ explorer.mode() === 'scale' ? 'Find your way' : 'Find your next' }}
+      <br />
+      {{ explorer.mode() === 'scale' ? 'around the' : 'favorite' }}
+      <em>{{ explorer.mode() === 'scale' ? 'fretboard.' : 'chord.' }}</em>
+    </h1>
+    <p>Get to know the notes. Connect the dots. Make a little music.</p>
+  </div>
+  <div class="intro-badge">
+    <span>♩</span>
+    <div>
+      Small steps.
+      <br />
+      <strong>Better playing.</strong>
+    </div>
+  </div>
+</section>
+<div class="workspace">
+  <app-sound-selector
+    [root]="explorer.root()"
+    [scaleKey]="explorer.scaleKey()"
+    [chordKey]="explorer.chordKey()"
+    [mode]="explorer.mode()"
+    (rootChange)="explorer.setRoot($event)"
+    (scaleChange)="explorer.setScale($event)"
+    (chordChange)="explorer.setChord($event)"
+  />
+  <app-note-explorer
+    [name]="explorer.name()"
+    [notes]="explorer.notes()"
+    [scale]="explorer.scale()"
+    [mode]="explorer.mode()"
+    [chordKey]="explorer.chordKey()"
+    [selectedPitch]="audio.selectedPitch()"
+    [playing]="audio.playing()"
+    [audioError]="audio.error()"
+    (playRequested)="togglePlayback()"
+    (noteSelected)="audio.playNote($event)"
+  />
+</div>
+@if (explorer.mode() === 'chord') {
+  <app-chord-shape-picker
+    [name]="explorer.name()"
+    [shapes]="explorer.shapes()"
+    [selectedIndex]="explorer.shapeIndex()"
+    (shapeSelected)="explorer.chooseShape($event)"
+    (strumRequested)="strum()"
+  />
+}
+<app-fretboard
+  [notes]="explorer.notes()"
+  [mode]="explorer.mode()"
+  [activeShape]="explorer.activeShape()"
+  [selectedPitch]="audio.selectedPitch()"
+  [showDegrees]="showDegrees()"
+  (degreesChange)="showDegrees.set($event)"
+  (noteSelected)="audio.playNote($event)"
+/>
+
+<section class="practice-tip">
+  <div class="tip-icon">☀</div>
+  <div>
+    <span class="overline">A LITTLE PRACTICE TIP</span>
+    <p>
+      Start on
+      <strong>{{ explorer.root() }}</strong>
+      . Play each note slowly, then work your way back. Your fingers will learn the map.
+    </p>
+  </div>
+  <span class="tip-decoration">one note at a time ↗</span>
+</section>

@@ -92,121 +92,6 @@ main {
   padding: 43px 40px 0;
   margin: auto;
 }
-.eyebrow {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 1.9px;
-  color: #818d7c;
-}
-.tiny-icon {
-  font-size: 20px;
-  color: #4b6655;
-}
-.eyebrow-line {
-  height: 1px;
-  width: 30px;
-  background: #cdd5c6;
-}
-.intro {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 19px 0 34px;
-}
-h1 {
-  font-family: Manrope, sans-serif;
-  font-size: 48px;
-  line-height: 1.17;
-  font-weight: 650;
-  letter-spacing: -2.5px;
-  margin: 0 0 15px;
-}
-h1 em {
-  font-family: Georgia, serif;
-  font-weight: 400;
-  color: #648060;
-  letter-spacing: -1.7px;
-}
-.intro p {
-  font-size: 13px;
-  color: #7b837a;
-  margin: 0;
-}
-.intro-badge {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 12px 14px 0 0;
-  transform: rotate(-5deg);
-}
-.intro-badge > span {
-  width: 60px;
-  height: 60px;
-  border: 1px solid #d9e1ce;
-  border-radius: 50%;
-  font-size: 35px;
-  color: #657f59;
-  display: grid;
-  place-items: center;
-  background: #f0f4e7;
-}
-.intro-badge div {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #7b8775;
-}
-.intro-badge strong {
-  font-weight: 500;
-  color: #4d6350;
-}
-.workspace {
-  display: grid;
-  grid-template-columns: 290px 1fr;
-  gap: 22px;
-}
-.practice-tip {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 23px 26px;
-  margin-top: 23px;
-  background: #eef2e5;
-  border: 1px solid #e3e9d8;
-  border-radius: 11px;
-}
-.tip-icon {
-  height: 37px;
-  width: 37px;
-  border: 1px solid #d5dec5;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  color: #82975e;
-  font-size: 23px;
-  background: #f5f7ed;
-}
-.practice-tip p {
-  margin: 7px 0 0;
-  font-size: 11px;
-  color: #879174;
-  line-height: 1.6;
-}
-.practice-tip strong {
-  color: #536c3e;
-  font-weight: 600;
-}
-.tip-decoration {
-  margin-left: auto;
-  color: #9ba786;
-  font-family: Georgia, serif;
-  font-style: italic;
-  font-size: 16px;
-  transform: rotate(-5deg);
-  white-space: nowrap;
-}
 footer {
   display: flex;
   gap: 20px;
@@ -235,26 +120,16 @@ footer > span:last-child {
   main {
     padding-top: 50px;
   }
-  .intro {
-    margin-bottom: 40px;
-  }
 }
 @media (max-width: 1100px) {
   main {
     padding: 32px 25px 0;
-  }
-  .workspace {
-    grid-template-columns: 260px 1fr;
-    gap: 16px;
   }
   .header-end {
     display: none;
   }
   .github-link {
     margin-left: auto;
-  }
-  .tip-decoration {
-    display: none;
   }
 }
 @media (max-width: 760px) {
@@ -271,32 +146,8 @@ footer > span:last-child {
   .brand {
     font-size: 25px;
   }
-  .intro-badge {
-    display: none;
-  }
   main {
     padding: 28px 18px 0;
-  }
-  h1 {
-    font-size: 40px;
-  }
-  .intro p {
-    font-size: 12px;
-    max-width: 280px;
-    line-height: 1.7;
-  }
-  .workspace {
-    grid-template-columns: 1fr;
-  }
-  .practice-tip {
-    padding: 19px 16px;
-    gap: 12px;
-  }
-  .tip-icon {
-    flex-shrink: 0;
-  }
-  .practice-tip p {
-    font-size: 10px;
   }
   footer {
     gap: 12px;
@@ -307,5 +158,81 @@ footer > span:last-child {
     margin-left: 0;
     width: 100%;
     text-align: right;
+  }
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #dce2d8;
+  padding-bottom: 16px;
+}
+.page-nav a {
+  padding: 11px 18px;
+  border-radius: 8px;
+  color: #586652;
+  font-size: 13px;
+  font-weight: 600;
+}
+.page-nav a:hover {
+  background: #eef2e5;
+}
+.page-nav a.active {
+  background: #284d3d;
+  color: white;
+}
+#page-content:focus {
+  outline: none;
+}
+/* The same navigation becomes a collapsible list on phones. */
+.menu-toggle {
+  display: none;
+}
+@media (max-width: 760px) {
+  .topbar {
+    gap: 12px;
+    padding-inline: 18px;
+  }
+  .github-link {
+    padding-inline: 11px;
+  }
+  .github-link > span {
+    display: none;
+  }
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #dce2d8;
+    border-radius: 9px;
+    background: transparent;
+    color: #284d3d;
+  }
+  .menu-toggle:hover,
+  .menu-toggle[aria-expanded='true'] {
+    background: #eef2e5;
+    border-color: #8ca075;
+  }
+  .page-nav {
+    display: none;
+  }
+  .page-nav.is-open {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 26px;
+    padding: 10px;
+    border: 1px solid #dce2d8;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .page-nav a {
+    min-height: 44px;
+    padding: 12px 16px;
   }
 }

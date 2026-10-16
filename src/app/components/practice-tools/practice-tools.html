@@ -37,6 +37,9 @@
       <path d="M4 7h16M4 17h16M8 4v6M16 14v6" />
     </svg>
     <span>Practice tools</span>
+    @if (metronome.playing()) {
+      <span class="running-tempo" role="status">♩ {{ metronome.bpm() }} BPM</span>
+    }
     <span aria-hidden="true">{{ menuOpen() ? '−' : '+' }}</span>
   </button>
   @if (menuOpen()) {
@@ -45,7 +48,11 @@
         <span class="menu-icon" aria-hidden="true">♩</span>
         <span>
           <strong>Metronome</strong>
-          <small>Keep a steady beat</small>
+          <small>
+            {{
+              metronome.playing() ? 'Playing · ' + metronome.bpm() + ' BPM' : 'Keep a steady beat'
+            }}
+          </small>
         </span>
         <span aria-hidden="true">↗</span>
       </button>
